@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "hyperswitch-embeddable",
   "version": "1.0.0",
   "description": "SDK for embedding Hyperswitch components via iframes",
   "main": "dist/index.js",

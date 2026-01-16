@@ -1,6 +1,6 @@
 # Hyperswitch Embeddable SDK
 
-A JavaScript library for embedding Hyperswitch components via iframes, inspired by Stripe's approach.
+A JavaScript library for embedding Hyperswitch components via iframes, inspired by Stripe Connect's approach.
 
 ## Installation
 
@@ -15,11 +15,29 @@ yarn add hyperswitch-embeddable
 ```javascript
 import { loadHyperswitch } from 'hyperswitch-embeddable';
 
-// Initialize the SDK
+// Initialize the SDK with a fetchToken callback
 (async function() {
   try {
     // Create and authenticate a Hyperswitch instance
-    const hyperswitch = await loadHyperswitch('your_api_key', {
+    const hyperswitch = await loadHyperswitch({
+      // Callback function to fetch the authentication token
+      // This is called:
+      // 1. Initially when loadHyperswitch is called
+      // 2. When a component sends TOKEN_EXPIRED event (automatic token refresh)
+      fetchToken: async () => {
+        const response = await fetch('/api/get-hyperswitch-token', { 
+          method: 'POST' 
+        });
+        
+        if (!response.ok) {
+          const { error } = await response.json();
+          console.error('Failed to fetch token:', error);
+          return undefined; // Return undefined to indicate error
+        }
+        
+        const { token } = await response.json();
+        return token;
+      },
       baseUrl: 'http://localhost:5000',
       theme: 'light'
     });
@@ -40,7 +58,7 @@ import { loadHyperswitch } from 'hyperswitch-embeddable';
     });
     
     // Create and mount other components
-    const configComponent = hyperswitch.create('connector-configure');
+    const configComponent = hyperswitch.create('connectors');
     configComponent.mount('#config-container');
     
     const dashboard = hyperswitch.create('dashboard');
@@ -58,7 +76,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   loadHyperswitch, 
   HyperswitchProvider, 
-  ConnectorListReact, 
+  ConnectorList, 
   ConnectorConfiguration,
   Dashboard
 } from 'hyperswitch-embeddable';
@@ -68,11 +86,27 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Initialize the SDK
+  // Initialize the SDK with fetchToken callback
   useEffect(() => {
     async function initHyperswitch() {
       try {
-        const instance = await loadHyperswitch('your_api_key', {
+        const instance = await loadHyperswitch({
+          // Callback to fetch token - called initially and on TOKEN_EXPIRED
+          fetchToken: async () => {
+            const response = await fetch('/api/get-hyperswitch-token', { 
+              method: 'POST' 
+            });
+            
+            if (!response.ok) {
+              const { error } = await response.json();
+              console.error('Failed to fetch token:', error);
+              setError(new Error(error));
+              return undefined;
+            }
+            
+            const { token } = await response.json();
+            return token;
+          },
           baseUrl: 'http://localhost:5000',
           theme: 'dark'
         });
@@ -97,7 +131,7 @@ function App() {
         
         <div className="section">
           <h2>Connector List</h2>
-          <ConnectorListReact
+          <ConnectorList
             className="connector-list"
             width="100%"
             height="400px"
@@ -141,13 +175,13 @@ connectorList.mount('#container');
 <ConnectorListReact {...options} />
 ```
 
-### 2. Connector Configuration (`connector-configure`)
+### 2. Connector Configuration (`connectors`)
 
 Allows configuration of payment connectors.
 
 ```javascript
 // JavaScript
-const configComponent = hyperswitch.create('connector-configure', options);
+const configComponent = hyperswitch.create('connectors', options);
 configComponent.mount('#container');
 
 // React
@@ -181,11 +215,26 @@ All components accept the following options:
 
 ## Initialize Options
 
-When calling `loadHyperswitch`, you can provide these options:
+When calling `loadHyperswitch`, you provide an options object with:
+
+- `fetchToken` - **(required)** Async callback function that returns the authentication token. This function is called:
+  1. Initially when `loadHyperswitch` is called
+  2. Automatically when a child component sends `TOKEN_EXPIRED` event (for token refresh)
+  
+  The callback should return `undefined` if an error occurs.
 
 - `baseUrl` - Base URL for the API endpoints
-- `token` - Authentication token (if different from apiKey)
 - `theme` - UI theme ('light' or 'dark')
+
+### Token Refresh Flow
+
+The SDK automatically handles token refresh:
+
+1. When a child iframe component detects the token is expired, it sends a `TOKEN_EXPIRED` postMessage event
+2. The SDK catches this event and calls the `fetchToken` callback again
+3. The new token is broadcasted to all active components
+
+This ensures seamless operation without manual token management.
 
 ## Browser Support
 
