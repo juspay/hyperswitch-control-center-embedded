@@ -1,5 +1,6 @@
 import { Hyperswitch } from './hyperswitch';
-import { HyperswitchElement, ElementOptions } from './element';
+import { HyperswitchElement } from './element';
+import { ElementOptions } from './types';
 
 export class ConnectorConfigurationComponent extends HyperswitchElement {
   constructor(instance: Hyperswitch, options?: ElementOptions) {

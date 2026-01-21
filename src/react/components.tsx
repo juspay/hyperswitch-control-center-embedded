@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useRef, useEffect } from 'react';
 import { useHyperswitchInstance } from './context';
-import { ElementOptions } from '../core/element';
+import { ElementOptions } from '../core/types';
 import type { ConnectorConfigurationComponent } from '../core/connector-configuration';
 
 interface ComponentProps extends ElementOptions {}

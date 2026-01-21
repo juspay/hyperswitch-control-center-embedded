@@ -42,10 +42,6 @@ abstract class HyperswitchElement {
     this.iframe.style.height = '100%';
     this.iframe.title = `Hyperswitch ${this.getElementType()}`;
     
-    this.iframe.addEventListener('load', () => {
-      (this.instance as any).onElementIframeLoaded(this);
-    });
-    
     this.element.appendChild(this.iframe);
   }
   
@@ -100,4 +96,4 @@ abstract class HyperswitchElement {
   }
 }
 
-export { HyperswitchElement, ElementOptions };
+export { HyperswitchElement };

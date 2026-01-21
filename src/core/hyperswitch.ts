@@ -16,7 +16,7 @@ class Hyperswitch {
     }
     this.fetchToken = options.fetchToken;
     this.initPromise = this.fetchInitialToken();
-    this.listenForTokenExpired();
+    this.listenForMessages();
   }
 
   private fetchInitialToken(): Promise<void> {
@@ -39,10 +39,18 @@ class Hyperswitch {
     });
   }
 
-  private listenForTokenExpired(): void {
+  private listenForMessages(): void {
     window.addEventListener("message", async (event) => {
       if (event.data?.type === "TOKEN_EXPIRED" && event.data?.value === true) {
         await this.refetchAndBroadcastToken();
+      } else if (event.data?.type === "EMBEDDED_IFRAME_READY") {
+        // Find the element whose iframe matches the event source
+        this.activeElements.forEach((element) => {
+          const iframe = element.getIframe();
+          if (iframe?.contentWindow === event.source) {
+            this.onElementIframeLoaded(element);
+          }
+        });
       }
     });
   }
