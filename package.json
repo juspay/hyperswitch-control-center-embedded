@@ -1,7 +1,7 @@
 {
-  "name": "hyperswitch-embeddable",
+  "name": "hyperswitch-control-center-embedded",
   "version": "1.0.0",
-  "description": "SDK for embedding Hyperswitch components via iframes",
+  "description": "SDK for embedding Hyperswitch components",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "files": [
