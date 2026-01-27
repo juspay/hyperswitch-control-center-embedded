@@ -72,7 +72,7 @@ class Hyperswitch {
           const iframe = element.getIframe();
           if (iframe?.contentWindow) {
             iframe.contentWindow.postMessage({
-              type: 'AUTH_TOKEN',
+              type: 'INIT_CONFIG',
               token: this.token
             }, '*');
           }
@@ -138,8 +138,9 @@ class Hyperswitch {
             }, '*');
           } else if (this.token) {
             contentWindow.postMessage({
-              type: 'AUTH_TOKEN',
-              token: this.token
+              type: 'INIT_CONFIG',
+              token: this.token,
+              backgroundColor: element.options?.backgroundColor
             }, '*');
           } else {
             contentWindow.postMessage({
