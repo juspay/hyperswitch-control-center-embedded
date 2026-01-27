@@ -1,88 +1,169 @@
 # Hyperswitch Embeddable SDK
 
-A simple React library for embedding Hyperswitch components via iframes.
+A React SDK for embedding Hyperswitch connector configuration into your application with built-in authentication and token management.
+
+## Features
+
+- Automatic token management with expiration handling
+- Secure communication between your app and embedded components
+- Simple React integration with Provider pattern
 
 ## Installation
 
+Add the following to your `package.json` dependencies:
+
+```json
+"dependencies": {
+  "hyperswitch-control-center-embedded": "github:juspay/hyperswitch-control-center-embedded"
+}
+```
+
+Then run:
 ```bash
-npm install hyperswitch-embeddable
+npm install
 ```
 
-## Components
+**Requirements:**
+- React 18.x - 20.x
 
-This SDK provides two main components:
-
-### HyperswitchHome
+## Quick Start
 
 ```jsx
-import React from "react";
-import { HyperswitchHome } from "hyperswitch-embeddable";
+import React, { useEffect, useState } from 'react';
+import { loadHyperswitch, HyperswitchProvider, ConnectorConfiguration } from 'hyperswitch-control-center-embedded';
 
 function App() {
+  const [hyperswitchInstance, setHyperswitchInstance] = useState(null);
+
+  useEffect(() => {
+    const instance = loadHyperswitch({
+      fetchToken: async () => {
+        // Fetch your authentication token from your backend
+        const response = await fetch('/api/get-token');
+        const data = await response.json();
+        return data.token;
+      }
+    });
+    setHyperswitchInstance(instance);
+  }, []);
+
+  if (!hyperswitchInstance) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div>
-      <HyperswitchHome />
-    </div>
+    <HyperswitchProvider hyperswitchInstance={hyperswitchInstance}>
+      <ConnectorConfiguration />
+    </HyperswitchProvider>
   );
 }
+
+export default App;
 ```
 
-The `HyperswitchHome` component renders an iframe that loads the Hyperswitch home page. By default, it points to `http://localhost:5000/v2/home`.
+## How It Works
 
-### ConnectorList
+### 1. Initialize the SDK
 
-```jsx
-import React from "react";
-import { ConnectorList } from "hyperswitch-embeddable";
+Create a Hyperswitch instance by providing a function that fetches your authentication token:
 
-function App() {
-  return (
-    <div>
-      <ConnectorList />
-    </div>
-  );
-}
-```
+```javascript
+import { loadHyperswitch } from 'hyperswitch-embeddable';
 
-The `ConnectorList` component renders an iframe that loads the Hyperswitch connector list. By default, it points to `http://localhost:5000/connector`.
-
-## Props
-
-Both components accept the following props:
-
-- `url`: (optional) Override the default URL
-- `width`: (optional) Set the iframe width (default: '100%')
-- `height`: (optional) Set the iframe height (default: '500px')
-- `style`: (optional) Add custom CSS styles to the iframe
-
-Example with custom props:
-
-```jsx
-<HyperswitchHome width="800px" height="600px" style={{ borderRadius: "8px" }} />
-```
-
-## Messaging
-
-The ConnectorList component sends a message to the iframe content (child window) when it mounts. This allows the parent application to communicate with the content loaded in the iframe.
-
-### Parent-to-Child Communication
-
-The ConnectorList component automatically sends a message to the iframe content with a token. This message can be received inside the iframe content with the following code:
-
-```js
-// Inside the iframe content (e.g., a script in http://localhost:5000/connector)
-window.addEventListener("message", (event) => {
-  // Verify the message source if needed
-  // if (event.origin !== 'your-expected-origin') return;
-
-  // Process the message
-  if (event.data && event.data.type === "PARENT_MESSAGE") {
-    console.log("Token received in iframe:", event.data.token); // Will output: 'sfvgsdfvfgdB'
-
-    // You can now use this token in your iframe content
-    // For example, authenticate with a backend service
+const hyperswitchInstance = loadHyperswitch({
+  fetchToken: async () => {
+    // Your logic to fetch authentication token
+    const token = await yourAuthService.getToken();
+    return token;
   }
 });
 ```
 
-This approach allows secure communication between your main application and the content loaded inside the iframe, even if they are from different domains (subject to cross-origin restrictions).
+The `fetchToken` function will be called:
+- When the SDK is initialized
+- Automatically when the token expires
+
+### 2. Add the Provider
+
+Wrap your app with `HyperswitchProvider`:
+
+```jsx
+import { HyperswitchProvider } from 'hyperswitch-embeddable';
+
+<HyperswitchProvider hyperswitchInstance={hyperswitchInstance}>
+  {/* Your app components */}
+</HyperswitchProvider>
+```
+
+### 3. Use the Component
+
+Add `ConnectorConfiguration` anywhere inside the provider:
+
+```jsx
+import { ConnectorConfiguration } from 'hyperswitch-embeddable';
+
+<ConnectorConfiguration />
+```
+
+## API Reference
+
+### `loadHyperswitch(options)`
+
+Initializes the SDK.
+
+**Parameters:**
+- `fetchToken` (required): `() => Promise<string | undefined>` - Function that returns your authentication token
+
+**Returns:** Hyperswitch instance
+
+### `<HyperswitchProvider>`
+
+Provider component that makes the Hyperswitch instance available to child components.
+
+**Props:**
+- `hyperswitchInstance` (required): The instance from `loadHyperswitch()`
+- `children` (required): Your React components
+
+### `<ConnectorConfiguration>`
+
+Component that renders the connector configuration interface.
+
+**Props:**
+- `url` (optional): Custom base URL (default: `http://localhost:9000`)
+
+**Example:**
+```jsx
+<ConnectorConfiguration url="https://your-hyperswitch-instance.com" />
+```
+
+## Token Management
+
+The SDK handles token lifecycle automatically:
+
+1. **Initial Load**: Fetches token when SDK initializes
+2. **Token Expiration**: When the embedded component detects token expiration, it signals the SDK
+3. **Auto Refresh**: SDK calls your `fetchToken()` function to get a new token
+4. **Distribution**: New token is automatically sent to all embedded components
+
+
+## Error Handling
+
+Handle errors in your `fetchToken` function:
+
+```jsx
+const hyperswitchInstance = loadHyperswitch({
+  fetchToken: async () => {
+    try {
+      const token = await getTokenFromBackend();
+      return token;
+    } catch (error) {
+      console.error('Token fetch error:', error);
+      return undefined; // SDK will send AUTH_ERROR to iframe
+    }
+  }
+});
+```
+
+## Support
+
+For issues and questions, visit the [GitHub repository](https://github.com/juspay/hyperswitch-control-center-embedded).
