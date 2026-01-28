@@ -19,6 +19,8 @@ export type ElementOptions = {
   width?: string | number;
   /** Height of the element container */
   height?: string | number;
+  /** Background color for the element */
+  backgroundColor?: string;
   /** Custom CSS styles to apply to the element */
   style?: Partial<CSSStyleDeclaration>;
   /** Additional CSS class names */

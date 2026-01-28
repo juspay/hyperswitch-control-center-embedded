@@ -3,7 +3,7 @@ import { ElementOptions } from './types';
 
 abstract class HyperswitchElement {
   protected instance: Hyperswitch;
-  protected options: ElementOptions;
+  public readonly options: ElementOptions;
   public element: HTMLElement;
   protected iframe: HTMLIFrameElement;
   private boundMessageHandler;
@@ -31,6 +31,7 @@ abstract class HyperswitchElement {
       width: this.options.width || '100%',
       height: this.options.height || '500px',
       overflow: 'hidden',
+      ...(this.options.backgroundColor && { backgroundColor: this.options.backgroundColor }),
       ...(this.options.style || {})
     });
   }
