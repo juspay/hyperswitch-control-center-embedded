@@ -1,4 +1,4 @@
-# Hyperswitch Embeddable SDK
+# Hyperswitch Control Center Embedded SDK
 
 A React SDK for embedding Hyperswitch connector configuration into your application with built-in authentication and token management.
 
@@ -68,7 +68,7 @@ export default App;
 Create a Hyperswitch instance by providing a function that fetches your authentication token:
 
 ```javascript
-import { loadHyperswitch } from 'hyperswitch-embeddable';
+import { loadHyperswitch } from 'hyperswitch-control-center-embedded';
 
 const hyperswitchInstance = loadHyperswitch({
   fetchToken: async () => {
@@ -88,7 +88,7 @@ The `fetchToken` function will be called:
 Wrap your app with `HyperswitchProvider`:
 
 ```jsx
-import { HyperswitchProvider } from 'hyperswitch-embeddable';
+import { HyperswitchProvider } from 'hyperswitch-control-center-embedded';
 
 <HyperswitchProvider hyperswitchInstance={hyperswitchInstance}>
   {/* Your app components */}
@@ -100,7 +100,7 @@ import { HyperswitchProvider } from 'hyperswitch-embeddable';
 Add `ConnectorConfiguration` anywhere inside the provider:
 
 ```jsx
-import { ConnectorConfiguration } from 'hyperswitch-embeddable';
+import { ConnectorConfiguration } from 'hyperswitch-control-center-embedded';
 
 <ConnectorConfiguration />
 ```
