@@ -41,6 +41,8 @@ abstract class HyperswitchElement {
     this.iframe.style.width = '100%';
     this.iframe.style.height = '100%';
     this.iframe.title = `Hyperswitch ${this.getElementType()}`;
+    this.iframe.setAttribute('allow', 'clipboard-read; clipboard-write; clipboard-sanitized-write');
+    this.iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-modals allow-presentation allow-downloads');
     
     this.element.appendChild(this.iframe);
   }
