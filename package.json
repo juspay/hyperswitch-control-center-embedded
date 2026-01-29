@@ -4,11 +4,13 @@
   "description": "SDK for embedding Hyperswitch components",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "webpack",
+    "build": "webpack && npm run build:types",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir dist/types",
     "dev": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
