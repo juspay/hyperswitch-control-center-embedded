@@ -4,10 +4,20 @@
   "description": "SDK for embedding Hyperswitch components",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
+  "module": "dist/index.esm.js",
   "sideEffects": false,
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "webpack && npm run build:types",
     "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir dist/types",
