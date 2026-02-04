@@ -1,52 +1,21 @@
 {
   "name": "hyperswitch-control-center-embedded",
   "version": "1.0.0",
-  "description": "SDK for embedding Hyperswitch components",
-  "main": "dist/index.js",
-  "types": "dist/types/index.d.ts",
-  "module": "dist/index.esm.js",
-  "sideEffects": false,
-  "files": [
-    "dist"
+  "private": true,
+  "description": "Monorepo for Hyperswitch Control Center Embedded SDK",
+  "workspaces": [
+    "core",
+    "react"
   ],
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.js",
-      "browser": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
   "scripts": {
-    "build": "webpack && npm run build:types",
-    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir dist/types",
-    "dev": "webpack --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "peerDependencies": {
-    "react": ">=18 <20",
-    "react-dom": ">=18 <20"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.28.5",
-    "@babel/preset-env": "^7.28.5",
-    "@babel/preset-react": "^7.28.5",
-    "@babel/preset-typescript": "^7.28.5",
-    "@rollup/plugin-commonjs": "^29.0.0",
-    "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-replace": "^6.0.3",
-    "@types/node": "^24.10.0",
-    "@types/react": "^18.2.0",
-    "babel-loader": "^10.0.0",
-    "react": "^18.2.0",
-    "rollup": "^2.79.2",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.36.0",
-    "typescript": "^5.9.3",
-    "webpack": "^5.105.0",
-    "webpack-cli": "^6.0.1"
+    "build": "npm run build --workspaces",
+    "build:core": "npm run build --workspace=core",
+    "build:react": "npm run build --workspace=react",
+    "type-check": "npm run type-check --workspaces",
+    "type-check:core": "npm run type-check --workspace=core",
+    "type-check:react": "npm run type-check --workspace=react",
+    "clean": "npm run clean --workspaces && rm -rf node_modules",
+    "test:types": "npm run type-check",
+    "prepublishOnly": "npm run build && npm run type-check"
   }
 }
