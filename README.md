@@ -1,169 +1,132 @@
 # Hyperswitch Control Center Embedded SDK
 
-A React SDK for embedding Hyperswitch connector configuration into your application with built-in authentication and token management.
+A monorepo containing two packages for embedding Hyperswitch components into your application:
 
-## Features
+- **`@hyperswitch/embedded-sdk`** - Vanilla JavaScript SDK (no React required)
+- **`@hyperswitch/react-embedded-sdk`** - React wrapper components
 
-- Automatic token management with expiration handling
-- Secure communication between your app and embedded components
-- Simple React integration with Provider pattern
+## Packages
 
-## Installation
+### Core Package (Vanilla JS)
+- **Package name**: `@hyperswitch/embedded-sdk`
+- **No dependencies**: Works in any JavaScript environment
+- **Use when**: Building with vanilla JS, Vue, Angular, or any non-React framework
 
-Add the following to your `package.json` dependencies:
-
-```json
-"dependencies": {
-  "hyperswitch-control-center-embedded": "github:juspay/hyperswitch-control-center-embedded"
-}
-```
-
-Then run:
-```bash
-npm install
-```
-
-**Requirements:**
-- React 18.x - 20.x
+### React Package
+- **Package name**: `@hyperswitch/react-embedded-sdk`
+- **Dependencies**: Requires React 18+ and the core package
+- **Use when**: Building a React application
 
 ## Quick Start
 
+### Vanilla JavaScript
+
+```javascript
+import { loadHyperswitch } from '@hyperswitch/embedded-sdk';
+
+const hyperswitch = loadHyperswitch({
+  fetchToken: async () => {
+    const response = await fetch('/api/token');
+    const data = await response.json();
+    return data.token;
+  }
+});
+
+const element = hyperswitch.create('connectors', {
+  url: 'https://your-hyperswitch-server.com',
+  width: '100%',
+  height: '600px'
+});
+
+element.mount('#container');
+```
+
+### React
+
 ```jsx
-import React, { useEffect, useState } from 'react';
-import { loadHyperswitch, HyperswitchProvider, ConnectorConfiguration } from 'hyperswitch-control-center-embedded';
+import { loadHyperswitch } from '@hyperswitch/embedded-sdk';
+import { HyperswitchProvider, ConnectorConfiguration } from '@hyperswitch/react-embedded-sdk';
+
+const hyperswitch = loadHyperswitch({
+  fetchToken: async () => {
+    const response = await fetch('/api/token');
+    const data = await response.json();
+    return data.token;
+  }
+});
 
 function App() {
-  const [hyperswitchInstance, setHyperswitchInstance] = useState(null);
-
-  useEffect(() => {
-    const instance = loadHyperswitch({
-      fetchToken: async () => {
-        // Fetch your authentication token from your backend
-        const response = await fetch('/api/get-token');
-        const data = await response.json();
-        return data.token;
-      }
-    });
-    setHyperswitchInstance(instance);
-  }, []);
-
-  if (!hyperswitchInstance) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <HyperswitchProvider hyperswitchInstance={hyperswitchInstance}>
-      <ConnectorConfiguration />
+    <HyperswitchProvider hyperswitchInstance={hyperswitch}>
+      <ConnectorConfiguration 
+        url="https://your-hyperswitch-server.com"
+        width="100%"
+        height="600px"
+      />
     </HyperswitchProvider>
   );
 }
-
-export default App;
 ```
 
-## How It Works
+## Installation
 
-### 1. Initialize the SDK
+### From GitHub (Not Published to npm Yet)
 
-Create a Hyperswitch instance by providing a function that fetches your authentication token:
+```bash
+# Core package (vanilla JS)
+npm install git+https://github.com/your-username/hyperswitch-control-center-embedded.git#core
 
-```javascript
-import { loadHyperswitch } from 'hyperswitch-control-center-embedded';
-
-const hyperswitchInstance = loadHyperswitch({
-  fetchToken: async () => {
-    // Your logic to fetch authentication token
-    const token = await yourAuthService.getToken();
-    return token;
-  }
-});
+# React package
+npm install git+https://github.com/your-username/hyperswitch-control-center-embedded.git#react
 ```
 
-The `fetchToken` function will be called:
-- When the SDK is initialized
-- Automatically when the token expires
+### Local Development (npm link)
 
-### 2. Add the Provider
+```bash
+# In SDK monorepo
+cd core && npm link
+cd ../react && npm link
 
-Wrap your app with `HyperswitchProvider`:
-
-```jsx
-import { HyperswitchProvider } from 'hyperswitch-control-center-embedded';
-
-<HyperswitchProvider hyperswitchInstance={hyperswitchInstance}>
-  {/* Your app components */}
-</HyperswitchProvider>
+# In your application
+npm link @hyperswitch/embedded-sdk
+npm link @hyperswitch/react-embedded-sdk
 ```
 
-### 3. Use the Component
+## Documentation
 
-Add `ConnectorConfiguration` anywhere inside the provider:
+- **[INTEGRATION.md](./INTEGRATION.md)** - Complete integration guide with all installation methods and examples
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Architecture and design documentation
 
-```jsx
-import { ConnectorConfiguration } from 'hyperswitch-control-center-embedded';
+## Features
 
-<ConnectorConfiguration />
+- ✅ **Vanilla JS support** - No React required for core package
+- ✅ **React support** - React components available as separate package
+- ✅ **Automatic token management** - Handles token refresh automatically
+- ✅ **TypeScript support** - Full type definitions included
+- ✅ **Multiple build formats** - UMD, ESM, and CommonJS
+
+## Requirements
+
+- **Core package**: None (works in any JavaScript environment)
+- **React package**: React 18.x - 20.x
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Build both packages
+npm run build
+
+# Build individually
+npm run build:core
+npm run build:react
+
+# Type check
+npm run type-check
 ```
 
-## API Reference
+## License
 
-### `loadHyperswitch(options)`
-
-Initializes the SDK.
-
-**Parameters:**
-- `fetchToken` (required): `() => Promise<string | undefined>` - Function that returns your authentication token
-
-**Returns:** Hyperswitch instance
-
-### `<HyperswitchProvider>`
-
-Provider component that makes the Hyperswitch instance available to child components.
-
-**Props:**
-- `hyperswitchInstance` (required): The instance from `loadHyperswitch()`
-- `children` (required): Your React components
-
-### `<ConnectorConfiguration>`
-
-Component that renders the connector configuration interface.
-
-**Props:**
-- `url` (optional): Custom base URL (default: `http://localhost:9000`)
-
-**Example:**
-```jsx
-<ConnectorConfiguration url="https://your-hyperswitch-instance.com" />
-```
-
-## Token Management
-
-The SDK handles token lifecycle automatically:
-
-1. **Initial Load**: Fetches token when SDK initializes
-2. **Token Expiration**: When the embedded component detects token expiration, it signals the SDK
-3. **Auto Refresh**: SDK calls your `fetchToken()` function to get a new token
-4. **Distribution**: New token is automatically sent to all embedded components
-
-
-## Error Handling
-
-Handle errors in your `fetchToken` function:
-
-```jsx
-const hyperswitchInstance = loadHyperswitch({
-  fetchToken: async () => {
-    try {
-      const token = await getTokenFromBackend();
-      return token;
-    } catch (error) {
-      console.error('Token fetch error:', error);
-      return undefined; // SDK will send AUTH_ERROR to iframe
-    }
-  }
-});
-```
-
-## Support
-
-For issues and questions, visit the [GitHub repository](https://github.com/juspay/hyperswitch-control-center-embedded).
+ISC
