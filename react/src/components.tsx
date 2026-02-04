@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useRef, useEffect } from 'react';
 import { useHyperswitchInstance } from './context';
-import { ElementOptions } from '../core/types';
-import type { ConnectorConfigurationComponent } from '../core/connector-configuration';
+import { ElementOptions } from '@hyperswitch/embedded-sdk';
+import type { ConnectorConfigurationComponent } from '@hyperswitch/embedded-sdk';
 
 interface ComponentProps extends ElementOptions {}
 

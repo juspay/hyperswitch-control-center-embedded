@@ -2,7 +2,7 @@
  * React context for Hyperswitch SDK
  */
 import React, { createContext, useContext, ReactNode } from 'react';
-import { Hyperswitch } from '../core/hyperswitch';
+import { Hyperswitch } from '@hyperswitch/embedded-sdk';
 
 // Create context
 const HyperswitchContext = createContext<Hyperswitch | null>(null);

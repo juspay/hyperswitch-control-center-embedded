@@ -2,8 +2,6 @@ import { HyperswitchElement } from './element';
 import { ConnectorConfigurationComponent } from './connector-configuration';
 import { HyperswitchInitOptions } from './types';
 
-const isBrowser = typeof window !== 'undefined';
-
 class Hyperswitch {
   private token: string | null = null;
   private fetchToken: () => Promise<string | undefined>;
@@ -18,10 +16,7 @@ class Hyperswitch {
     }
     this.fetchToken = options.fetchToken;
     this.initPromise = this.fetchInitialToken();
-    
-    if (isBrowser) {
-      this.listenForMessages();
-    }
+    this.listenForMessages();
   }
 
   private fetchInitialToken(): Promise<void> {
@@ -45,10 +40,6 @@ class Hyperswitch {
   }
 
   private listenForMessages(): void {
-    if (!isBrowser) {
-      return;
-    }
-
     window.addEventListener("message", async (event) => {
       if (event.data?.type === "TOKEN_EXPIRED" && event.data?.value === true) {
         await this.refetchAndBroadcastToken();
