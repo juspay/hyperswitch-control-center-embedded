@@ -2,7 +2,7 @@
  * React context for Hyperswitch SDK
  */
 import React, { createContext, useContext, ReactNode } from 'react';
-import { Hyperswitch } from '@hyperswitch/embedded-sdk';
+import { Hyperswitch } from '@juspay-tech/hyper-dashboard-embed-core';
 
 // Create context
 const HyperswitchContext = createContext<Hyperswitch | null>(null);

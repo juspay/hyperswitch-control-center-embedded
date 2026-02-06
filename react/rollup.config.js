@@ -25,7 +25,7 @@ export default {
       globals: {
         react: 'React',
         'react-dom': 'ReactDOM',
-        '@hyperswitch/embedded-sdk': 'HyperswitchEmbeddable'
+        '@juspay-tech/hyper-dashboard-embed-core': 'HyperswitchEmbeddable'
       }
     },
     {
@@ -37,7 +37,7 @@ export default {
       globals: {
         react: 'React',
         'react-dom': 'ReactDOM',
-        '@hyperswitch/embedded-sdk': 'HyperswitchEmbeddable'
+        '@juspay-tech/hyper-dashboard-embed-core': 'HyperswitchEmbeddable'
       }
     }
   ],
@@ -61,7 +61,7 @@ export default {
     'react',
     'react-dom',
     'react/jsx-runtime',
-    '@hyperswitch/embedded-sdk'
+    '@juspay-tech/hyper-dashboard-embed-core'
   ]
 };
 
