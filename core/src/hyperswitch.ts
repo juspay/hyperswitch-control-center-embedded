@@ -1,11 +1,13 @@
 import { HyperswitchElement } from './element';
 import { ConnectorConfigurationComponent } from './connector-configuration';
 import { HyperswitchInitOptions } from './types';
+import { InitConfig } from './init-config';
 
 class Hyperswitch {
   private token: string | null = null;
   private fetchToken: () => Promise<string | undefined>;
-  private activeElements: Map<string, HyperswitchElement> = new Map();
+  private initConfig: InitConfig | null = null;
+  private activeElements: Map<string, HyperswitchElement> =     new Map();
   private isRefetchingToken: boolean = false;
   private initPromise: Promise<void>;
   private tokenError: string | null = null;
@@ -14,7 +16,9 @@ class Hyperswitch {
     if (!options || typeof options.fetchToken !== 'function') {
       throw new Error('loadHyperswitch requires a fetchToken callback function');
     }
+
     this.fetchToken = options.fetchToken;
+    this.initConfig = options.initConfig ?? null;
     this.initPromise = this.fetchInitialToken();
     this.listenForMessages();
   }
@@ -37,7 +41,7 @@ class Hyperswitch {
     }).catch((error) => {
       this.tokenError = `Failed to fetch token: ${error instanceof Error ? error.message : String(error)}`;
     });
-  }
+  } 
 
   private listenForMessages(): void {
     window.addEventListener("message", async (event) => {
@@ -145,6 +149,14 @@ class Hyperswitch {
             contentWindow.postMessage({
               type: 'AUTH_ERROR',
               error: 'No token available'
+            }, '*');
+          }
+
+          // Send init_config (if available) as a separate message
+          if (this.initConfig) {
+            contentWindow.postMessage({
+              type: 'INIT_CONFIG',
+              init_config: this.initConfig
             }, '*');
           }
         } catch (error) {

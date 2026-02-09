@@ -1,3 +1,5 @@
+import type { InitConfig } from './init-config';
+
 /**
  * Options for initializing the Hyperswitch SDK
  */
@@ -7,6 +9,11 @@ export interface HyperswitchInitOptions {
    * @returns A promise that resolves with a new token.
    */
   fetchToken: () => Promise<string | undefined>;
+
+  /**
+   * Optional initial configuration (init_config) object
+   */
+  initConfig?: InitConfig;
 };
 
 /**
