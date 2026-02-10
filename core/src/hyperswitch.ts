@@ -1,7 +1,7 @@
 import { HyperswitchElement } from './element';
 import { ConnectorConfigurationComponent } from './connector-configuration';
 import { HyperswitchInitOptions } from './types';
-import { InitConfig } from './init-config';
+import { buildInitConfig,InitConfig } from './init-config';
 
 class Hyperswitch {
   private token: string | null = null;
@@ -18,7 +18,7 @@ class Hyperswitch {
     }
 
     this.fetchToken = options.fetchToken;
-    this.initConfig = options.initConfig ?? null;
+     this.initConfig = options.initConfig ? buildInitConfig(options.initConfig) : null;
     this.initPromise = this.fetchInitialToken();
     this.listenForMessages();
   }

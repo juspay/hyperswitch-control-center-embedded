@@ -1,4 +1,4 @@
-import type { InitConfig } from './init-config';
+import type { MerchantTheme } from './init-config';
 
 /**
  * Options for initializing the Hyperswitch SDK
@@ -13,7 +13,7 @@ export interface HyperswitchInitOptions {
   /**
    * Optional initial configuration (init_config) object
    */
-  initConfig?: InitConfig;
+  initConfig?: MerchantTheme;
 };
 
 /**
