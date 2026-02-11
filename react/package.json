@@ -22,7 +22,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@juspay-tech/hyperswitch-control-center-embed-core": "file:../core"
+        "@juspay-tech/hyperswitch-control-center-embed-core": "github:juspay/hyperswitch-control-center-embedded#subdirectory=core"
     },
     "peerDependencies": {
         "react": ">=18 <20",
