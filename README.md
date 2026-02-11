@@ -2,18 +2,18 @@
 
 A monorepo containing two packages for embedding Hyperswitch components into your application:
 
-- **`@juspay-tech/hyper-dashboard-embed-core`** - Vanilla JavaScript SDK (no React required)
-- **`@juspay-tech/hyper-dashboard-embed-react`** - React wrapper components
+- **`@juspay-tech/hyperswitch-control-center-embed-core`** - Vanilla JavaScript SDK (no React required)
+- **`@juspay-tech/hyperswitch-control-center-embed-react`** - React wrapper components
 
 ## Packages
 
 ### Core Package (Vanilla JS)
-- **Package name**: `@juspay-tech/hyper-dashboard-embed-core`
+- **Package name**: `@juspay-tech/hyperswitch-control-center-embed-core`
 - **No dependencies**: Works in any JavaScript environment
 - **Use when**: Building with vanilla JS, Vue, Angular, or any non-React framework
 
 ### React Package
-- **Package name**: `@juspay-tech/hyper-dashboard-embed-react`
+- **Package name**: `@juspay-tech/hyperswitch-control-center-embed-react`
 - **Dependencies**: Requires React 18+ and the core package
 - **Use when**: Building a React application
 
@@ -22,7 +22,7 @@ A monorepo containing two packages for embedding Hyperswitch components into you
 ### Vanilla JavaScript
 
 ```javascript
-import { loadHyperswitch } from '@juspay-tech/hyper-dashboard-embed-core';
+import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-core';
 
 const hyperswitch = loadHyperswitch({
   fetchToken: async () => {
@@ -44,8 +44,8 @@ element.mount('#container');
 ### React
 
 ```jsx
-import { loadHyperswitch } from '@juspay-tech/hyper-dashboard-embed-core';
-import { HyperswitchProvider, ConnectorConfiguration } from '@juspay-tech/hyper-dashboard-embed-react';
+import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-core';
+import { HyperswitchProvider, ConnectorConfiguration } from '@juspay-tech/hyperswitch-control-center-embed-react';
 
 const hyperswitch = loadHyperswitch({
   fetchToken: async () => {
@@ -88,8 +88,8 @@ cd core && npm link
 cd ../react && npm link
 
 # In your application
-npm link @juspay-tech/hyper-dashboard-embed-core
-npm link @juspay-tech/hyper-dashboard-embed-react
+npm link @juspay-tech/hyperswitch-control-center-embed-core
+npm link @juspay-tech/hyperswitch-control-center-embed-react
 ```
 
 ## Documentation

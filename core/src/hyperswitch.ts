@@ -3,6 +3,8 @@ import { ConnectorConfigurationComponent } from './connector-configuration';
 import { HyperswitchInitOptions } from './types';
 import { buildInitConfig,InitConfig } from './init-config';
 
+const isBrowser = typeof window !== 'undefined';
+
 class Hyperswitch {
   private token: string | null = null;
   private fetchToken: () => Promise<string | undefined>;
@@ -44,6 +46,13 @@ class Hyperswitch {
   } 
 
   private listenForMessages(): void {
+    if (!isBrowser) {
+      // In SSR / non-browser environments we can't listen for postMessage events,
+      // but it's still safe to create a Hyperswitch instance (it will become
+      // useful on the client where another instance will typically be created).
+      return;
+    }
+
     window.addEventListener("message", async (event) => {
       if (event.data?.type === "TOKEN_EXPIRED" && event.data?.value === true) {
         await this.refetchAndBroadcastToken();

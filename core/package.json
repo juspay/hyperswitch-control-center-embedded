@@ -1,5 +1,5 @@
 {
-    "name": "@juspay-tech/hyper-dashboard-embed-core",
+    "name": "@juspay-tech/hyperswitch-control-center-embed-core",
     "version": "1.0.0",
     "description": "Javascript SDK for embedding Hyperswitch components",
     "main": "./dist/index.js",

@@ -1,5 +1,5 @@
 {
-    "name": "@juspay-tech/hyper-dashboard-embed-react",
+    "name": "@juspay-tech/hyperswitch-control-center-embed-react",
     "version": "1.0.0",
     "description": "React components for Hyperswitch embedded SDK",
     "main": "./dist/index.js",
@@ -22,7 +22,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@juspay-tech/hyper-dashboard-embed-core": "file:../core"
+        "@juspay-tech/hyperswitch-control-center-embed-core": "file:../core"
     },
     "peerDependencies": {
         "react": ">=18 <20",
