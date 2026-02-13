@@ -1,0 +1,44 @@
+{
+    "name": "@juspay-tech/hyperswitch-control-center-embed-react",
+    "version": "1.0.0",
+    "description": "React components for Hyperswitch embedded SDK",
+    "main": "./dist/index.js",
+    "module": "./dist/index.esm.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "rollup -c",
+        "type-check": "tsc --noEmit",
+        "clean": "rm -rf dist"
+    },
+    "keywords": [
+        "hyperswitch",
+        "embedded",
+        "sdk",
+        "react"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@juspay-tech/hyperswitch-control-center-embed-core": "github:juspay/hyperswitch-control-center-embedded#subdirectory=core"
+    },
+    "peerDependencies": {
+        "react": ">=18 <20",
+        "react-dom": ">=18 <20"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^29.0.0",
+        "@rollup/plugin-node-resolve": "^16.0.3",
+        "@rollup/plugin-replace": "^6.0.3",
+        "@types/node": "^24.10.0",
+        "@types/react": "^18.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "rollup": "^2.79.2",
+        "rollup-plugin-terser": "^7.0.2",
+        "rollup-plugin-typescript2": "^0.36.0",
+        "typescript": "^5.9.3"
+    }
+}
