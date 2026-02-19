@@ -1,0 +1,28 @@
+# Source files
+src/
+tsconfig.json
+rollup.config.js
+
+# Development files
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+__tests__/
+__mocks__/
+
+# Build artifacts
+*.tsbuildinfo
+.rollup.cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+node_modules/
+.DS_Store
+.env
+.env.local
+*.log
+coverage/

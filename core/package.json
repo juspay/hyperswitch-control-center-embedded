@@ -1,0 +1,56 @@
+{
+    "name": "@juspay-tech/hyperswitch-control-center-embed-core",
+    "version": "1.0.0",
+    "description": "Hyperswitch Control Center Embed - Core Javascript SDK for embedding components",
+    "main": "./dist/index.js",
+    "module": "./dist/index.esm.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.esm.js",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "rollup -c",
+        "type-check": "tsc --noEmit",
+        "clean": "rm -rf dist",
+        "prepublishOnly": "pnpm run clean && pnpm run build"
+    },
+    "keywords": [
+        "hyperswitch",
+        "control-center",
+        "embedded",
+        "sdk",
+        "embed"
+    ],
+    "author": "Juspay Technologies",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/juspay/hyperswitch-control-center-embedded.git",
+        "directory": "core"
+    },
+    "bugs": {
+        "url": "https://github.com/juspay/hyperswitch-control-center-embedded/issues"
+    },
+    "homepage": "https://github.com/juspay/hyperswitch-control-center-embedded#readme",
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^29.0.0",
+        "@rollup/plugin-node-resolve": "^16.0.3",
+        "@rollup/plugin-replace": "^6.0.3",
+        "@types/node": "^24.10.0",
+        "rollup": "^2.79.2",
+        "@rollup/plugin-terser": "^0.4.4",
+        "rollup-plugin-typescript2": "^0.36.0",
+        "typescript": "^5.9.3"
+    }
+}

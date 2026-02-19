@@ -1,0 +1,5 @@
+packages:
+  - 'core'
+  - 'react'
+  - '!.'  # Exclude root to match npm workspaces behavior
+
