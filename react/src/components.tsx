@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useRef, useEffect } from 'react';
 import { useHyperswitchInstance } from './context';
-import { ElementOptions } from '@juspay-tech/hyper-dashboard-embed-core';
-import type { ConnectorConfigurationComponent } from '@juspay-tech/hyper-dashboard-embed-core';
+import { ElementOptions } from '@juspay-tech/hyperswitch-control-center-embed-core';
+import type { ConnectorConfigurationComponent } from '@juspay-tech/hyperswitch-control-center-embed-core';
 
 interface ComponentProps extends ElementOptions {}
 

@@ -1,7 +1,7 @@
 {
-    "name": "@juspay-tech/hyper-dashboard-embed-core",
-    "version": "1.0.1",
-    "description": "Hyperswitch Dashboard Embed - Core Javascript SDK for embedding components",
+    "name": "@juspay-tech/hyperswitch-control-center-embed-core",
+    "version": "1.0.0",
+    "description": "Hyperswitch Control Center Embed - Core Javascript SDK for embedding components",
     "main": "./dist/index.js",
     "module": "./dist/index.esm.js",
     "types": "./dist/index.d.ts",
@@ -24,23 +24,22 @@
     },
     "keywords": [
         "hyperswitch",
-        "dashboard",
+        "control-center",
         "embedded",
         "sdk",
-        "embed",
-        "control-center"
+        "embed"
     ],
     "author": "Juspay Technologies",
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "https://github.com/kanikabansal08/embed-sdk.git",
+        "url": "https://github.com/juspay/hyperswitch-control-center-embedded.git",
         "directory": "core"
     },
     "bugs": {
-        "url": "https://github.com/kanikabansal08/embed-sdk/issues"
+        "url": "https://github.com/juspay/hyperswitch-control-center-embedded/issues"
     },
-    "homepage": "https://github.com/kanikabansal08/embed-sdk#readme",
+    "homepage": "https://github.com/juspay/hyperswitch-control-center-embedded#readme",
     "publishConfig": {
         "access": "public"
     },

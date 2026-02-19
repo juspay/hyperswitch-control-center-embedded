@@ -1,7 +1,7 @@
 {
-    "name": "@juspay-tech/hyper-dashboard-embed-react",
-    "version": "1.0.1",
-    "description": "Hyperswitch Dashboard Embed - React components for embedded SDK",
+    "name": "@juspay-tech/hyperswitch-control-center-embed-react",
+    "version": "1.0.0",
+    "description": "Hyperswitch Control Center Embed - React components for embedded SDK",
     "main": "./dist/index.js",
     "module": "./dist/index.esm.js",
     "types": "./dist/index.d.ts",
@@ -24,7 +24,7 @@
     },
     "keywords": [
         "hyperswitch",
-        "dashboard",
+        "control-center",
         "embedded",
         "react",
         "sdk",
@@ -34,13 +34,13 @@
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "https://github.com/kanikabansal08/embed-sdk.git",
+        "url": "https://github.com/juspay/hyperswitch-control-center-embedded.git",
         "directory": "react"
     },
     "bugs": {
-        "url": "https://github.com/kanikabansal08/embed-sdk/issues"
+        "url": "https://github.com/juspay/hyperswitch-control-center-embedded/issues"
     },
-    "homepage": "https://github.com/kanikabansal08/embed-sdk#readme",
+    "homepage": "https://github.com/juspay/hyperswitch-control-center-embedded#readme",
     "publishConfig": {
         "access": "public"
     },
@@ -49,7 +49,7 @@
         "react-dom": ">=18 <20"
     },
     "dependencies": {
-        "@juspay-tech/hyper-dashboard-embed-core": "workspace:*"
+        "@juspay-tech/hyperswitch-control-center-embed-core": "^1.0.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^29.0.0",

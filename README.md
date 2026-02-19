@@ -1,30 +1,30 @@
-# Hyperswitch Embedded SDK
+# Hyperswitch Control Center Embedded SDK
 
 A monorepo containing two packages for embedding components into your application:
 
-- **`@juspay-tech/hyper-dashboard-embed-core`** - Vanilla JavaScript SDK (no React required)
-- **`@juspay-tech/hyper-dashboard-embed-react`** - React wrapper components
+- **`@juspay-tech/hyperswitch-control-center-embed-core`** - Vanilla JavaScript SDK (no React required)
+- **`@juspay-tech/hyperswitch-control-center-embed-react`** - React wrapper components
 
 ## Installation
 
 ### Core package (vanilla JS)
 ```bash
-npm install @juspay-tech/hyper-dashboard-embed-core
+npm install @juspay-tech/hyperswitch-control-center-embed-core
 ```
 
 ### React package
 ```bash
-npm install @juspay-tech/hyper-dashboard-embed-react
+npm install @juspay-tech/hyperswitch-control-center-embed-react
 ```
 
 ## Usage
 
 ### Core Package (Vanilla JS)
-- **Package name**: `@juspay-tech/hyper-dashboard-embed-core`
+- **Package name**: `@juspay-tech/hyperswitch-control-center-embed-core`
 - **No dependencies**: Works in any JavaScript environment
 
 ```javascript
-import { loadHyperswitch } from '@juspay-tech/hyper-dashboard-embed-core';
+import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-core';
 
 const hyperswitch = loadHyperswitch({
   fetchToken: async () => {
@@ -45,12 +45,12 @@ element.mount('#container');
 ```
 
 ### React Package
-- **Package name**: `@juspay-tech/hyper-dashboard-embed-react`
+- **Package name**: `@juspay-tech/hyperswitch-control-center-embed-react`
 - **Dependencies**: Requires React 18+ and the core package
 
 ```jsx
-import { loadHyperswitch } from '@juspay-tech/hyper-dashboard-embed-core';
-import { HyperswitchProvider, ConnectorConfiguration } from '@juspay-tech/hyper-dashboard-embed-react';
+import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-core';
+import { HyperswitchProvider, ConnectorConfiguration } from '@juspay-tech/hyperswitch-control-center-embed-react';
 
 function App() {
   const hyperswitch = loadHyperswitch({

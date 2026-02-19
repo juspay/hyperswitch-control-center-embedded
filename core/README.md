@@ -1,17 +1,17 @@
-@juspay-tech/hyper-dashboard-embed-core
+@juspay-tech/hyperswitch-control-center-embed-core
 
-**Hyperswitch Dashboard Embed - Core** - Core JavaScript SDK for embedding Hyperswitch dashboard components.
+**Hyperswitch Control Center Embed - Core** - Core JavaScript SDK for embedding Hyperswitch control center components.
 
 ## Installation
 
 ```bash
-npm install @juspay-tech/hyper-dashboard-embed-core
+npm install @juspay-tech/hyperswitch-control-center-embed-core
 ```
 
 ## Usage
 
 ```javascript
-import { loadHyperswitch } from '@juspay-tech/hyper-dashboard-embed-core';
+import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-core';
 
 // Initialize and use the SDK
 const hyperswitch = loadHyperswitch({

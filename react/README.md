@@ -1,11 +1,11 @@
-@juspay-tech/hyper-dashboard-embed-react
+@juspay-tech/hyperswitch-control-center-embed-react
 
-**Hyperswitch Dashboard Embed - React** - React components for Hyperswitch embedded SDK.
+**Hyperswitch Control Center Embed - React** - React components for Hyperswitch embedded SDK.
 
 ## Installation
 
 ```bash
-npm install @juspay-tech/hyper-dashboard-embed-react
+npm install @juspay-tech/hyperswitch-control-center-embed-react
 ```
 
 This package requires React 18+ and the core package as peer dependencies.
@@ -13,7 +13,7 @@ This package requires React 18+ and the core package as peer dependencies.
 ## Usage
 
 ```jsx
-import { HyperswitchProvider, useHyperswitchInstance } from '@juspay-tech/hyper-dashboard-embed-react';
+import { HyperswitchProvider, useHyperswitchInstance } from '@juspay-tech/hyperswitch-control-center-embed-react';
 
 function App() {
   const hyperswitch = loadHyperswitch(yourConfig);

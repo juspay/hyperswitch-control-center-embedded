@@ -37,7 +37,7 @@ importers:
 
   react:
     dependencies:
-      '@juspay-tech/hyper-dashboard-embed-core':
+      '@juspay-tech/hyperswitch-control-center-embed-core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
