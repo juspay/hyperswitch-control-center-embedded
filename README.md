@@ -77,7 +77,7 @@ function App() {
 
 ### Install dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 ### Build all packages
@@ -87,13 +87,13 @@ npm run build
 
 ### Build individual packages
 ```bash
-npm run build:core
-npm run build:react
+pnpm run build:core
+pnpm run build:react
 ```
 
 ### Clean build artifacts
 ```bash
-npm run clean
+pnpm run clean
 ```
 
 ### Type checking
