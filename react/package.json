@@ -49,7 +49,7 @@
         "react-dom": ">=18 <20"
     },
     "dependencies": {
-        "@juspay-tech/hyperswitch-control-center-embed-core": "^1.0.0"
+        "@juspay-tech/hyperswitch-control-center-embed-core": "workspace:*"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^29.0.0",
