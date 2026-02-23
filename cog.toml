@@ -1,0 +1,7 @@
+[changelog]
+path = "CHANGELOG.md"
+template = "remote"
+remote = "github.com"
+repository = "hyperswitch-control-center-embedded"
+owner = "juspay"
+authors = []
