@@ -1,0 +1,127 @@
+name: Create a release
+
+on: workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tag-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    if: github.ref == 'refs/heads/main'
+    outputs:
+      version: ${{ steps.git_tag.outputs.version }}
+      updated_ref: ${{ steps.push_main.outputs.updated_ref }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install cocogitto
+        uses: baptiste0928/cargo-install@v2.2.0
+        with:
+          crate: cocogitto
+          version: "6.2.0"
+
+      - name: Semver release
+        shell: bash
+        run: |
+          git config user.email "embed_bot@juspay.in"
+          git config user.name "Embedded Bot"
+          cog bump --auto --skip-ci-override "[skip ci]"
+
+      - name: Set latest tag
+        id: git_tag
+        shell: bash
+        run: |
+          version=$(git tag -l --sort=-creatordate | grep "^v" | head -n 1 | sed 's/^v//')
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      - name: Set the version to all packages
+        run: |
+          node -e "
+            const fs = require('fs');
+            const version = '${{ steps.git_tag.outputs.version }}';
+
+            const corePkg = require('./core/package.json');
+            corePkg.version = version;
+            fs.writeFileSync('./core/package.json', JSON.stringify(corePkg, null, 4) + '\n');
+
+            const reactPkg = require('./react/package.json');
+            reactPkg.version = version;
+            reactPkg.dependencies['@juspay-tech/hyperswitch-control-center-embed-core'] = '^' + version;
+            fs.writeFileSync('./react/package.json', JSON.stringify(reactPkg, null, 4) + '\n');
+          "
+          git add core/package.json react/package.json
+          git commit --amend --no-edit
+
+      - name: Push code to main
+        id: push_main
+        shell: bash
+        run: |
+          git pull --rebase origin main
+          git push origin main
+          git push origin --tags
+          echo "updated_ref=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+  publish:
+    name: Publish to npm
+    needs: tag-release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.tag-release.outputs.updated_ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm run prepublishOnly
+
+      - name: Publish core package
+        working-directory: core
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish react package
+        working-directory: react
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.tag-release.outputs.version }}
+          name: Release v${{ needs.tag-release.outputs.version }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
