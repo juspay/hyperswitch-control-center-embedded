@@ -32,8 +32,8 @@ jobs:
       - name: Semver release
         shell: bash
         run: |
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
+          git config user.email "embed_bot@juspay.in"
+          git config user.name "Embedded Bot"
           cog bump --auto --skip-ci-override "[skip ci]"
 
       - name: Set latest tag
