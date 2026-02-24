@@ -12,6 +12,10 @@
     "type-check:react": "pnpm --filter react run type-check",
     "clean": "pnpm -r run clean && rm -rf node_modules",
     "test:types": "pnpm run type-check",
-    "prepublishOnly": "pnpm run build && pnpm run type-check"
+    "prepublishOnly": "pnpm run build && pnpm run type-check",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
   }
 }
