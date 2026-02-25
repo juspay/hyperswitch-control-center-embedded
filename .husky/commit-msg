@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+# Read the commit message from the file
+COMMIT_MSG=$(cat "$1")
+
+# Allowed commit types
+ALLOWED_TYPES="feat|fix|chore|refactor|docs|test|ci|style|perf|build|revert"
+
+# Check if commit message follows conventional format
+if ! echo "$COMMIT_MSG" | grep -qE "^($ALLOWED_TYPES)(\(.+\))?: .+"; then
+  echo ""
+  echo "*****~~~~~ Commit message validation! ~~~~~*****"
+  echo ""
+  echo "Aborting commit. Your commit message does not follow the conventional format."
+  echo ""
+  echo "The commit message should begin with one of the following keywords followed by a colon:"
+  echo ""
+  echo "  'feat', 'fix', 'chore', 'refactor', 'docs', 'test', 'ci', 'style', 'perf', 'build', 'revert'"
+  echo ""
+  echo "For example:"
+  echo "  • feat: add payment button"
+  echo "  • fix(core): handle null response"
+  echo "  • chore: update dependencies"
+  echo ""
+  exit 1
+fi
