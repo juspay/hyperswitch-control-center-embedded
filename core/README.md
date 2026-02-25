@@ -1,10 +1,15 @@
 # @juspay-tech/hyperswitch-control-center-embed-core
 
-Core JavaScript SDK for embedding Hyperswitch control center components into your web application.
+Core JavaScript SDK for embedding Hyperswitch Control Center components into any web application.
 
 ## Overview
 
-The `loadHyperswitch` function is the main entry point for initializing embedded Hyperswitch components. It loads components via an iframe and requires a `fetchToken` function that calls your backend to retrieve an embedded token. You can optionally pass a theme configuration to customize the appearance of the embedded UI.
+The `loadHyperswitch` function is the main entry point for initializing embedded Hyperswitch components.  
+It:
+
+- **Loads UI via an iframe** from the Hyperswitch Control Center
+- **Requires a `fetchToken` function** that calls your backend to retrieve an embedded token
+- **Optionally accepts `initConfig`** to customize the appearance of the embedded UI
 
 ## Installation
 
@@ -12,9 +17,15 @@ The `loadHyperswitch` function is the main entry point for initializing embedded
 npm install @juspay-tech/hyperswitch-control-center-embed-core
 ```
 
-## Import
+or with `pnpm`:
 
-### ES Module (Recommended)
+```bash
+pnpm add @juspay-tech/hyperswitch-control-center-embed-core
+```
+
+## Imports
+
+### ES Module (recommended)
 
 ```javascript
 import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-core';
@@ -26,9 +37,9 @@ import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-c
 const { loadHyperswitch } = require('@juspay-tech/hyperswitch-control-center-embed-core');
 ```
 
-## Basic Usage
+## Basic usage
 
-Initialize the SDK by providing a `fetchToken` function:
+Initialize the SDK by providing a `fetchToken` function that calls your backend:
 
 ```javascript
 const hyperswitch = loadHyperswitch({
@@ -44,9 +55,9 @@ const hyperswitch = loadHyperswitch({
 });
 ```
 
-## Optional Customization
+## Optional customization
 
-You can customize the appearance by passing a theme configuration:
+You can customize the appearance by passing a theme configuration as `initConfig`:
 
 ```javascript
 const initConfig = {
@@ -74,17 +85,17 @@ const hyperswitch = loadHyperswitch({
 
 All fields in `initConfig` are optional. Omitting them uses the default Control Center theme.
 
-## Creating a Component
+## Creating a component
 
 Create an embeddable component instance:
 
 ```javascript
-const connectors = hyperswitch.create('connectors', { 
-  url: 'https://app.hyperswitch.io/api' 
+const connectors = hyperswitch.create('connectors', {
+  url: 'https://app.hyperswitch.io/api'
 });
 ```
 
-Available component: `connectors`
+Currently available component: `connectors`.
 
 ## Mounting
 
@@ -98,7 +109,7 @@ Mount the component into a container element in your HTML:
 connectors.mount('#hyperswitch-root');
 ```
 
-## API Reference
+## API reference
 
 ### `loadHyperswitch(options)`
 

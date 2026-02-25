@@ -30,7 +30,7 @@
         "embed"
     ],
     "author": "Juspay Technologies",
-    "license": "ISC",
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/juspay/hyperswitch-control-center-embedded.git",

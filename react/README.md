@@ -1,15 +1,25 @@
 # @juspay-tech/hyperswitch-control-center-embed-react
 
-React components for embedding Hyperswitch control center components into React applications.
+React components for embedding Hyperswitch Control Center components into React applications.
 
 ## Overview
 
-This package provides React components (`HyperswitchProvider`, `ConnectorConfiguration`) that wrap the core SDK. The core package is included as an internal dependency — you only need to install the React package. You still use `loadHyperswitch` from the core package to initialize the SDK.
+This package provides React components (`HyperswitchProvider`, `ConnectorConfiguration`) that wrap the core SDK.  
+The core package is included as a dependency — you only need to install the React package (plus React peer dependencies).  
+You still use `loadHyperswitch` from the core package to initialize the SDK.
 
 ## Installation
 
+Install the React wrapper and React peer dependencies:
+
 ```bash
-npm install @juspay-tech/hyperswitch-control-center-embed-react
+npm install @juspay-tech/hyperswitch-control-center-embed-react react react-dom
+```
+
+or with `pnpm`:
+
+```bash
+pnpm add @juspay-tech/hyperswitch-control-center-embed-react react react-dom
 ```
 
 The core package is installed automatically — no separate installation required.
@@ -18,10 +28,13 @@ The core package is installed automatically — no separate installation require
 
 ```jsx
 import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-core';
-import { HyperswitchProvider, ConnectorConfiguration } from '@juspay-tech/hyperswitch-control-center-embed-react';
+import {
+  HyperswitchProvider,
+  ConnectorConfiguration
+} from '@juspay-tech/hyperswitch-control-center-embed-react';
 ```
 
-## Basic Usage
+## Basic usage
 
 Wrap your app with `HyperswitchProvider` and use the `ConnectorConfiguration` component:
 
@@ -47,9 +60,9 @@ function App() {
 }
 ```
 
-## Optional Customization
+## Optional customization
 
-You can customize the appearance by passing a theme configuration:
+You can customize the appearance by passing a theme configuration (same shape as the core SDK `MerchantTheme`):
 
 ```jsx
 const initConfig = {
@@ -85,7 +98,7 @@ function App() {
 
 All fields in `initConfig` are optional. Omitting them uses the default Control Center theme.
 
-## API Reference
+## API reference
 
 ### Exports
 
@@ -95,14 +108,14 @@ All fields in `initConfig` are optional. Omitting them uses the default Control 
 | `ConnectorConfiguration` | Pre-built connector configuration component |
 | `useHyperswitchInstance` | Hook to access the raw `Hyperswitch` instance |
 
-### `HyperswitchProvider` Props
+### `HyperswitchProvider` props
 
 | Prop | Type | Required | Description |
 |------|------|----------|-------------|
 | `hyperswitchInstance` | `Hyperswitch` | Yes | Instance returned by `loadHyperswitch()` |
 | `children` | `ReactNode` | Yes | Child components |
 
-### `ConnectorConfiguration` Props
+### `ConnectorConfiguration` props
 
 | Prop | Type | Description |
 |------|------|-------------|
