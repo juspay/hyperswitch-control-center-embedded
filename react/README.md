@@ -4,25 +4,19 @@ React components for embedding Hyperswitch Control Center components into React 
 
 ## Overview
 
-This package provides React components (`HyperswitchProvider`, `ConnectorConfiguration`) that wrap the core SDK.  
-The core package is included as a dependency — you only need to install the React package (plus React peer dependencies).  
-You still use `loadHyperswitch` from the core package to initialize the SDK.
+Official React bindings for the Hyperswitch Control Center embeddable SDK. Use `HyperswitchProvider` and `ConnectorConfiguration` to render Control Center flows (e.g. connector configuration) inside your React app. The core SDK is included as a dependency; initialize the embed with `loadHyperswitch` from the core package and pass the instance into the provider.
 
 ## Installation
 
-Install the React wrapper and React peer dependencies:
-
 ```bash
-npm install @juspay-tech/hyperswitch-control-center-embed-react react react-dom
+npm install @juspay-tech/hyperswitch-control-center-embed-react
 ```
 
 or with `pnpm`:
 
 ```bash
-pnpm add @juspay-tech/hyperswitch-control-center-embed-react react react-dom
+pnpm add @juspay-tech/hyperswitch-control-center-embed-react
 ```
-
-The core package is installed automatically — no separate installation required.
 
 ## Imports
 
@@ -104,16 +98,14 @@ All fields in `initConfig` are optional. Omitting them uses the default Control 
 
 | Export | Description |
 |--------|-------------|
-| `HyperswitchProvider` | Provider component wrapping the app |
-| `ConnectorConfiguration` | Pre-built connector configuration component |
-| `useHyperswitchInstance` | Hook to access the raw `Hyperswitch` instance |
+| `HyperswitchProvider` | Provider component that supplies the Hyperswitch embed instance to the tree |
+| `ConnectorConfiguration` | Component that renders the connector configuration UI |
 
 ### `HyperswitchProvider` props
 
 | Prop | Type | Required | Description |
 |------|------|----------|-------------|
 | `hyperswitchInstance` | `Hyperswitch` | Yes | Instance returned by `loadHyperswitch()` |
-| `children` | `ReactNode` | Yes | Child components |
 
 ### `ConnectorConfiguration` props
 

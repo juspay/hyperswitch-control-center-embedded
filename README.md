@@ -34,19 +34,17 @@ pnpm add @juspay-tech/hyperswitch-control-center-embed-core
 
 ### React package
 
-Install the React wrapper (core is pulled in as a dependency):
-
 ```bash
-npm install @juspay-tech/hyperswitch-control-center-embed-react react react-dom
+npm install @juspay-tech/hyperswitch-control-center-embed-react
 ```
 
 or with `pnpm`:
 
 ```bash
-pnpm add @juspay-tech/hyperswitch-control-center-embed-react react react-dom
+pnpm add @juspay-tech/hyperswitch-control-center-embed-react
 ```
 
-You still import and initialize the SDK using `loadHyperswitch` from the core package.
+The core package is included as a dependency. Import and initialize with `loadHyperswitch` from the core package.
 
 ## Quick usage
 
@@ -103,7 +101,7 @@ For full API details, see the `core/README.md` and `react/README.md` files.
 
 ## Development (for contributors)
 
-This repository uses `pnpm` for workspace management.
+This repository uses `pnpm` workspaces. Install dependencies with `pnpm install`. The scripts below can be run with either `npm run <script>` or `pnpm run <script>`.
 
 ### Install dependencies
 
@@ -114,26 +112,30 @@ pnpm install
 ### Build all packages
 
 ```bash
-pnpm run build
+npm run build
+# or: pnpm run build
 ```
 
 ### Type check all packages
 
 ```bash
-pnpm run type-check
+npm run type-check
+# or: pnpm run type-check
 ```
 
 ### Build individual packages
 
 ```bash
-pnpm run build:core
-pnpm run build:react
+npm run build:core
+npm run build:react
+# or: pnpm run build:core  /  pnpm run build:react
 ```
 
 ### Clean build artifacts
 
 ```bash
-pnpm run clean
+npm run clean
+# or: pnpm run clean
 ```
 
 ## License
