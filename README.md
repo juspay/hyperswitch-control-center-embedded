@@ -65,9 +65,7 @@ const hyperswitch = loadHyperswitch({
 });
 
 const connectors = hyperswitch.create('connectors', {
-  url: 'https://app.hyperswitch.io/api',
-  width: '100%',
-  height: '500px'
+  url: 'https://app.hyperswitch.io'
 });
 
 connectors.mount('#hyperswitch-root');
@@ -94,9 +92,7 @@ function App() {
   return (
     <HyperswitchProvider hyperswitchInstance={hyperswitch}>
       <ConnectorConfiguration
-        url="https://app.hyperswitch.io/api"
-        width="100%"
-        height="500px"
+        url="https://app.hyperswitch.io"
       />
     </HyperswitchProvider>
   );

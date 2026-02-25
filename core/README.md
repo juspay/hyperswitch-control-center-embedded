@@ -91,7 +91,7 @@ Create an embeddable component instance:
 
 ```javascript
 const connectors = hyperswitch.create('connectors', {
-  url: 'https://app.hyperswitch.io/api'
+  url: 'https://app.hyperswitch.io'
 });
 ```
 

@@ -54,7 +54,7 @@ const hyperswitch = loadHyperswitch({
 function App() {
   return (
     <HyperswitchProvider hyperswitchInstance={hyperswitch}>
-      <ConnectorConfiguration url="https://app.hyperswitch.io/api" />
+      <ConnectorConfiguration url="https://app.hyperswitch.io" />
     </HyperswitchProvider>
   );
 }
@@ -90,7 +90,7 @@ const hyperswitch = loadHyperswitch({
 function App() {
   return (
     <HyperswitchProvider hyperswitchInstance={hyperswitch}>
-      <ConnectorConfiguration url="https://app.hyperswitch.io/api" />
+      <ConnectorConfiguration url="https://app.hyperswitch.io" />
     </HyperswitchProvider>
   );
 }
