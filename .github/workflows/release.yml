@@ -58,7 +58,23 @@ jobs:
             reactPkg.dependencies['@juspay-tech/hyperswitch-control-center-embed-core'] = '^' + version;
             fs.writeFileSync('./react/package.json', JSON.stringify(reactPkg, null, 4) + '\n');
           "
-          git add core/package.json react/package.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Update lockfile
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Commit version and lockfile
+        run: |
+          git add core/package.json react/package.json pnpm-lock.yaml
           git commit --amend --no-edit
 
       - name: Push code to main
