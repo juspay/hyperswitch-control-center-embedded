@@ -1,3 +1,5 @@
+ignore_merge_commits = true
+
 [changelog]
 path = "CHANGELOG.md"
 template = "remote"
