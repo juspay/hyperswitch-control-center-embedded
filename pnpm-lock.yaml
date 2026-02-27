@@ -42,8 +42,8 @@ importers:
   react:
     dependencies:
       '@juspay-tech/hyperswitch-control-center-embed-core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: ^1.0.0
+        version: 1.0.0
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^29.0.0
@@ -96,6 +96,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@juspay-tech/hyperswitch-control-center-embed-core@1.0.0':
+    resolution: {integrity: sha512-XVPLYZ7zDWnvDRTHRc99YNGvKm7pqA3OHCXd/i6ZAr2fkkcuFf049uMHEfEw13/CsbIwTda0JT3wfPyCPmy0hA==}
 
   '@rollup/plugin-commonjs@29.0.0':
     resolution: {integrity: sha512-U2YHaxR2cU/yAiwKJtJRhnyLk7cifnQw0zUpISsocBDoHDJn+HTV74ABqnwr5bEgWUwFZC9oFL6wLe21lHu5eQ==}
@@ -389,6 +392,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@juspay-tech/hyperswitch-control-center-embed-core@1.0.0': {}
 
   '@rollup/plugin-commonjs@29.0.0(rollup@2.79.2)':
     dependencies:
