@@ -43,6 +43,11 @@ jobs:
           version=$(git tag -l --sort=-creatordate | grep "^v" | head -n 1 | sed 's/^v//')
           echo "version=$version" >> $GITHUB_OUTPUT
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Set the version to all packages
         run: |
           node -e "
@@ -55,10 +60,10 @@ jobs:
 
             const reactPkg = require('./react/package.json');
             reactPkg.version = version;
-            reactPkg.dependencies['@juspay-tech/hyperswitch-control-center-embed-core'] = '^' + version;
             fs.writeFileSync('./react/package.json', JSON.stringify(reactPkg, null, 4) + '\n');
           "
-          git add core/package.json react/package.json
+          pnpm install --no-frozen-lockfile
+          git add core/package.json react/package.json pnpm-lock.yaml
           git commit --amend --no-edit
 
       - name: Push code to main
@@ -105,11 +110,11 @@ jobs:
 
       - name: Publish core package
         working-directory: core
-        run: npm publish --provenance --access public
+        run: pnpm publish --no-git-checks --access public
 
       - name: Publish react package
         working-directory: react
-        run: npm publish --provenance --access public
+        run: pnpm publish --no-git-checks --access public
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
