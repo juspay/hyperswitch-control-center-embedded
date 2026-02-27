@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 
 - - -
+## [v1.1.0](https://github.com/juspay/hyperswitch-control-center-embedded/compare/a4d71e139a1d1b03b44e9b6406130a29c8f13843..v1.1.0) - 2026-02-27
+#### Bug Fixes
+- add cocogitto prefix tag - ([56f1792](https://github.com/juspay/hyperswitch-control-center-embedded/commit/56f179270978f30d57d4c0e29f3af4fbbed1a4c5)) - kanikabansal-juspay
+- add readme changes - ([daa3307](https://github.com/juspay/hyperswitch-control-center-embedded/commit/daa3307e677f75a34edf870c53c793d60479be67)) - kanikabansal-juspay
+- add readme changes - ([f80e6b3](https://github.com/juspay/hyperswitch-control-center-embedded/commit/f80e6b3857572a4fd3bcfb1bca3540645705e652)) - kanikabansal-juspay
+- add readme changes - ([2924989](https://github.com/juspay/hyperswitch-control-center-embedded/commit/2924989aae117795029d6910dbef858f0445d8d8)) - kanikabansal-juspay
+- remove publishing md - ([7e475f0](https://github.com/juspay/hyperswitch-control-center-embedded/commit/7e475f08963ac1ab9e1ab989a9c78dbc382bb515)) - kanikabansal-juspay
+#### Features
+- commit convention - ([4900c83](https://github.com/juspay/hyperswitch-control-center-embedded/commit/4900c83e8ba95a2c8b4fb1d9c8309487d39dc587)) - kanikabansal-juspay
+- commit convention - ([d3942bc](https://github.com/juspay/hyperswitch-control-center-embedded/commit/d3942bc829e740595c022992c120d4918cae260b)) - kanikabansal-juspay
+#### Miscellaneous Chores
+- **(version)** 0.1.0 [skip ci] - ([96589ac](https://github.com/juspay/hyperswitch-control-center-embedded/commit/96589ac944612213e4941f58dfc2012c68de47a0)) - Embedded Bot
+- **(version)** 0.1.0 [skip ci] - ([8f6c381](https://github.com/juspay/hyperswitch-control-center-embedded/commit/8f6c381958bfa03e67a2ced50db01ab77448cfeb)) - Embedded Bot
+- update node-v in publish for oidc trusted publishing - ([4d311e5](https://github.com/juspay/hyperswitch-control-center-embedded/commit/4d311e57e0f80abd7210cad2b2071ab47124fcbf)) - kanikabansal-juspay
+- update release.yml for npm publish auth fix - ([a7a249e](https://github.com/juspay/hyperswitch-control-center-embedded/commit/a7a249e7905e1e9e433a9c88e6b94ab9bb3ad219)) - kanikabansal-juspay
+- sync pnpm lockfile with react core version - ([2e8bdf8](https://github.com/juspay/hyperswitch-control-center-embedded/commit/2e8bdf8f44633bafc47ee46369e9b098d6f62017)) - kanikabansal-juspay
+- add cocogitto config and changelog separator for release - ([61700b7](https://github.com/juspay/hyperswitch-control-center-embedded/commit/61700b7e492352d56e0333b6a607307a85bb01c6)) - kanikabansal-juspay
+- add CI workflow and improve release documentation - ([bcaa54e](https://github.com/juspay/hyperswitch-control-center-embedded/commit/bcaa54ee012ae9c0482df2ff99bae839f10a6a9e)) - kanikabansal-juspay
+- update readme - ([e429c75](https://github.com/juspay/hyperswitch-control-center-embedded/commit/e429c7576ce58a347540fa1a736f1a5e12bdbf0f)) - kanikabansal-juspay
+- github action workflow pipeline - ([6462533](https://github.com/juspay/hyperswitch-control-center-embedded/commit/6462533d5ff712847b75797b67b19793a164b361)) - kanikabansal-juspay
+- github action workflow pipeline - ([a4d71e1](https://github.com/juspay/hyperswitch-control-center-embedded/commit/a4d71e139a1d1b03b44e9b6406130a29c8f13843)) - kanikabansal-juspay
+
+- - -
+
 ## [0.1.0](https://github.com/juspay/hyperswitch-control-center-embedded/compare/10823e9097dc8dbccb07c02962fdf2fdaceedc67..0.1.0) - 2026-02-27
 #### Bug Fixes
 - add readme changes - ([daa3307](https://github.com/juspay/hyperswitch-control-center-embedded/commit/daa3307e677f75a34edf870c53c793d60479be67)) - kanikabansal-juspay
