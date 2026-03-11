@@ -271,6 +271,7 @@
                   return;
               }
               setTimeout(() => {
+                  var _a;
                   try {
                       const contentWindow = iframe.contentWindow;
                       if (!contentWindow) {
@@ -294,13 +295,11 @@
                               error: 'No token available'
                           }, '*');
                       }
-                      // Send init_config (if available) as a separate message
-                      if (this.initConfig) {
-                          contentWindow.postMessage({
-                              type: 'INIT_CONFIG',
-                              init_config: this.initConfig
-                          }, '*');
-                      }
+                      // Always send init_config. If merchant doesn't provide it, send an empty object.
+                      contentWindow.postMessage({
+                          type: 'INIT_CONFIG',
+                          init_config: (_a = this.initConfig) !== null && _a !== void 0 ? _a : {}
+                      }, '*');
                   }
                   catch (error) {
                   }
