@@ -1,5 +1,6 @@
 import { HyperswitchElement } from './element';
-import { ConnectorConfigurationComponent } from './connector-configuration';
+import { ConnectorConfigurationComponent } from './components/connector-configuration';
+import { PaymentsListComponent } from './components/payments';
 import { HyperswitchInitOptions } from './types';
 import { buildInitConfig,InitConfig } from './init-config';
 
@@ -120,6 +121,9 @@ class Hyperswitch {
     switch (type) {
       case 'connectors':
         element = new ConnectorConfigurationComponent(this, options);
+        break;
+      case 'payments-list':
+        element = new PaymentsListComponent(this, options);
         break;
       default:
         throw new Error(`Unknown element type: ${type}`);
