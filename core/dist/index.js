@@ -5,6 +5,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const isBrowser$1 = typeof window !== 'undefined';
 class HyperswitchElement {
     constructor(instance, options) {
+        this.isFullPage = false;
+        this.previousBodyOverflow = '';
+        this.showIframeTimer = null;
         this.instance = instance;
         this.options = options || {};
         this._internalId = `hyper-el-${Math.random().toString(36).substring(7)}`;
@@ -44,14 +47,25 @@ class HyperswitchElement {
         this.element.appendChild(this.iframe);
     }
     handleMessage(event) {
-        var _a;
+        var _a, _b, _c, _d;
         if (!isBrowser$1) {
             return;
         }
         if (this.options.onMessage) {
             this.options.onMessage(event.data);
         }
-        if (((_a = event.data) === null || _a === void 0 ? void 0 : _a.type) === 'EMBEDDED_COMPONENT_RESIZE') {
+        if (event.source === this.iframe.contentWindow) {
+            if (((_a = event.data) === null || _a === void 0 ? void 0 : _a.type) === 'EMBEDDED_MODAL_OPEN') {
+                this.setFullPage(true);
+            }
+            else if (((_b = event.data) === null || _b === void 0 ? void 0 : _b.type) === 'EMBEDDED_MODAL_CLOSE') {
+                this.setFullPage(false);
+            }
+            else if (((_c = event.data) === null || _c === void 0 ? void 0 : _c.type) === 'EMBEDDED_MODAL_VISIBLE') {
+                this.showIframe();
+            }
+        }
+        if (((_d = event.data) === null || _d === void 0 ? void 0 : _d.type) === 'EMBEDDED_COMPONENT_RESIZE') {
             const newHeight = event.data.height;
             const messageComponent = event.data.component || '';
             if (messageComponent === this.getElementType() && typeof newHeight === 'number' && newHeight > 0) {
@@ -64,6 +78,50 @@ class HyperswitchElement {
                 }
             }
         }
+    }
+    setFullPage(isFullPage) {
+        var _a;
+        if (isFullPage !== this.isFullPage) {
+            this.isFullPage = isFullPage;
+            this.iframe.style.visibility = 'hidden';
+            if (isFullPage) {
+                this.previousBodyOverflow = document.body.style.overflow;
+                document.body.style.overflow = 'hidden';
+                Object.assign(this.iframe.style, {
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100vw',
+                    height: '100vh',
+                    zIndex: '2147483647'
+                });
+            }
+            else {
+                document.body.style.overflow = this.previousBodyOverflow;
+                Object.assign(this.iframe.style, {
+                    position: '',
+                    top: '',
+                    left: '',
+                    width: '100%',
+                    height: '100%',
+                    zIndex: ''
+                });
+            }
+            if (this.showIframeTimer) {
+                clearTimeout(this.showIframeTimer);
+            }
+            this.showIframeTimer = setTimeout(() => this.showIframe(), 300);
+        }
+        (_a = this.iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.postMessage({
+            type: isFullPage ? 'EMBEDDED_MODAL_OPENED' : 'EMBEDDED_MODAL_CLOSED'
+        }, '*');
+    }
+    showIframe() {
+        if (this.showIframeTimer) {
+            clearTimeout(this.showIframeTimer);
+            this.showIframeTimer = null;
+        }
+        this.iframe.style.visibility = '';
     }
     mount(domNode) {
         if (!isBrowser$1) {
@@ -82,6 +140,7 @@ class HyperswitchElement {
         if (!isBrowser$1) {
             return;
         }
+        this.setFullPage(false);
         if (this.boundMessageHandler) {
             window.removeEventListener('message', this.boundMessageHandler);
         }
@@ -104,6 +163,32 @@ class ConnectorConfigurationComponent extends HyperswitchElement {
     getIframeSrc() {
         const baseUrl = this.options.url || 'http://localhost:9000';
         return `${baseUrl}/embedded/connectors`;
+    }
+}
+
+class PaymentsComponent extends HyperswitchElement {
+    constructor(instance, options) {
+        super(instance, options);
+    }
+    getElementType() {
+        return 'payments';
+    }
+    getIframeSrc() {
+        const baseUrl = this.options.url || 'http://localhost:9000';
+        return `${baseUrl}/embedded/payments`;
+    }
+}
+
+class RefundsComponent extends HyperswitchElement {
+    constructor(instance, options) {
+        super(instance, options);
+    }
+    getElementType() {
+        return 'refunds';
+    }
+    getIframeSrc() {
+        const baseUrl = this.options.url || 'http://localhost:9000';
+        return `${baseUrl}/embedded/refunds`;
     }
 }
 
@@ -256,6 +341,12 @@ class Hyperswitch {
             case 'connectors':
                 element = new ConnectorConfigurationComponent(this, options);
                 break;
+            case 'payments':
+                element = new PaymentsComponent(this, options);
+                break;
+            case 'refunds':
+                element = new RefundsComponent(this, options);
+                break;
             default:
                 throw new Error(`Unknown element type: ${type}`);
         }
@@ -296,7 +387,8 @@ class Hyperswitch {
                     // Always send init_config. If merchant doesn't provide it, send an empty object.
                     contentWindow.postMessage({
                         type: 'INIT_CONFIG',
-                        init_config: (_a = this.initConfig) !== null && _a !== void 0 ? _a : {}
+                        init_config: (_a = this.initConfig) !== null && _a !== void 0 ? _a : {},
+                        sdk_capabilities: { full_page_modal: true }
                     }, '*');
                 }
                 catch (error) {
@@ -329,6 +421,8 @@ const VERSION = '1.0.0';
 exports.ConnectorConfigurationComponent = ConnectorConfigurationComponent;
 exports.Hyperswitch = Hyperswitch;
 exports.HyperswitchElement = HyperswitchElement;
+exports.PaymentsComponent = PaymentsComponent;
+exports.RefundsComponent = RefundsComponent;
 exports.VERSION = VERSION;
 exports.loadHyperswitch = loadHyperswitch;
 //# sourceMappingURL=index.js.map

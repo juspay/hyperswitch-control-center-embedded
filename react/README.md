@@ -100,6 +100,8 @@ All fields in `initConfig` are optional. Omitting them uses the default Control 
 |--------|-------------|
 | `HyperswitchProvider` | Provider component that supplies the Hyperswitch embed instance to the tree |
 | `ConnectorConfiguration` | Component that renders the connector configuration UI |
+| `PaymentsList` | Component that renders the payments list and payment details |
+| `RefundsList` | Component that renders the refunds list and refund details |
 
 ### `HyperswitchProvider` props
 
@@ -107,7 +109,7 @@ All fields in `initConfig` are optional. Omitting them uses the default Control 
 |------|------|----------|-------------|
 | `hyperswitchInstance` | `Hyperswitch` | Yes | Instance returned by `loadHyperswitch()` |
 
-### `ConnectorConfiguration` props
+### `ConnectorConfiguration`, `PaymentsList` and `RefundsList` props
 
 | Prop | Type | Description |
 |------|------|-------------|

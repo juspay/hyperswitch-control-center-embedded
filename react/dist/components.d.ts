@@ -3,4 +3,6 @@ import { ElementOptions } from '@juspay-tech/hyperswitch-control-center-embed-co
 interface ComponentProps extends ElementOptions {
 }
 export declare const ConnectorConfiguration: React.FC<ComponentProps>;
+export declare const PaymentsList: React.FC<ComponentProps>;
+export declare const RefundsList: React.FC<ComponentProps>;
 export {};

@@ -95,7 +95,15 @@ const connectors = hyperswitch.create('connectors', {
 });
 ```
 
-Currently available component: `connectors`.
+Available components:
+
+| Name | Renders |
+|------|---------|
+| `connectors` | Connector configuration |
+| `payments` | Payments list and payment details |
+| `refunds` | Refunds list and refund details |
+
+Modals opened inside a component are shown over the full host page: while one is open, the SDK temporarily stretches the component's iframe across the window and restores it on close.
 
 ## Mounting
 

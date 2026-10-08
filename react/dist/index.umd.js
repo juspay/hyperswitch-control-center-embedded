@@ -65,9 +65,41 @@
       return React__namespace.createElement("div", { ref: containerRef });
   };
   ConnectorConfiguration.displayName = 'ConnectorConfiguration';
+  var PaymentsList = function (props) {
+      var hyperswitchInstance = useHyperswitchInstance();
+      var containerRef = React.useRef(null);
+      React.useEffect(function () {
+          if (!containerRef.current)
+              return;
+          var component = hyperswitchInstance.create('payments', props);
+          component.mount(containerRef.current);
+          return function () {
+              component.destroy();
+          };
+      }, [hyperswitchInstance, props]);
+      return React__namespace.createElement("div", { ref: containerRef });
+  };
+  PaymentsList.displayName = 'PaymentsList';
+  var RefundsList = function (props) {
+      var hyperswitchInstance = useHyperswitchInstance();
+      var containerRef = React.useRef(null);
+      React.useEffect(function () {
+          if (!containerRef.current)
+              return;
+          var component = hyperswitchInstance.create('refunds', props);
+          component.mount(containerRef.current);
+          return function () {
+              component.destroy();
+          };
+      }, [hyperswitchInstance, props]);
+      return React__namespace.createElement("div", { ref: containerRef });
+  };
+  RefundsList.displayName = 'RefundsList';
 
   exports.ConnectorConfiguration = ConnectorConfiguration;
   exports.HyperswitchProvider = HyperswitchProvider;
+  exports.PaymentsList = PaymentsList;
+  exports.RefundsList = RefundsList;
   exports.useHyperswitchInstance = useHyperswitchInstance;
 
   Object.defineProperty(exports, '__esModule', { value: true });

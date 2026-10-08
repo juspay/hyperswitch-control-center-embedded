@@ -1,5 +1,7 @@
 import { HyperswitchElement } from './element';
 import { ConnectorConfigurationComponent } from './connector-configuration';
+import { PaymentsComponent } from './payments';
+import { RefundsComponent } from './refunds';
 import { HyperswitchInitOptions } from './types';
 import { buildInitConfig,InitConfig } from './init-config';
 
@@ -121,6 +123,12 @@ class Hyperswitch {
       case 'connectors':
         element = new ConnectorConfigurationComponent(this, options);
         break;
+      case 'payments':
+        element = new PaymentsComponent(this, options);
+        break;
+      case 'refunds':
+        element = new RefundsComponent(this, options);
+        break;
       default:
         throw new Error(`Unknown element type: ${type}`);
     }
@@ -164,7 +172,8 @@ class Hyperswitch {
           // Always send init_config. If merchant doesn't provide it, send an empty object.
           contentWindow.postMessage({
             type: 'INIT_CONFIG',
-            init_config: this.initConfig ?? {}
+            init_config: this.initConfig ?? {},
+            sdk_capabilities: { full_page_modal: true }
           }, '*');
         } catch (error) {
         }

@@ -7,10 +7,15 @@ declare abstract class HyperswitchElement {
     protected iframe: HTMLIFrameElement;
     private boundMessageHandler;
     readonly _internalId: string;
+    private isFullPage;
+    private previousBodyOverflow;
+    private showIframeTimer;
     constructor(instance: Hyperswitch, options?: ElementOptions);
     private setupElement;
     private setupIframe;
     private handleMessage;
+    private setFullPage;
+    private showIframe;
     mount(domNode: string | HTMLElement): HyperswitchElement;
     destroy(): void;
     protected abstract getElementType(): string;
