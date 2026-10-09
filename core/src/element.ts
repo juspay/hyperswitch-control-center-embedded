@@ -99,7 +99,7 @@ abstract class HyperswitchElement {
       const newHeight = event.data.height;
       const messageComponent = event.data.component || '';
       
-      if (messageComponent === this.getElementType() && typeof newHeight === 'number' && newHeight > 0) {
+      if (!this.isFullPage && messageComponent === this.getElementType() && typeof newHeight === 'number' && newHeight > 0) {
         this.element.style.height = `${newHeight}px`;
         
         if (this.options.onResize) {

@@ -71,7 +71,7 @@ class HyperswitchElement {
         if (((_d = event.data) === null || _d === void 0 ? void 0 : _d.type) === 'EMBEDDED_COMPONENT_RESIZE') {
             const newHeight = event.data.height;
             const messageComponent = event.data.component || '';
-            if (messageComponent === this.getElementType() && typeof newHeight === 'number' && newHeight > 0) {
+            if (!this.isFullPage && messageComponent === this.getElementType() && typeof newHeight === 'number' && newHeight > 0) {
                 this.element.style.height = `${newHeight}px`;
                 if (this.options.onResize) {
                     this.options.onResize({
