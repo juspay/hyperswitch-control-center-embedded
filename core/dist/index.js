@@ -8,6 +8,7 @@ class HyperswitchElement {
         this.isFullPage = false;
         this.previousBodyOverflow = '';
         this.showIframeTimer = null;
+        this.iframeOrigin = null;
         this.instance = instance;
         this.options = options || {};
         this._internalId = `hyper-el-${Math.random().toString(36).substring(7)}`;
@@ -54,7 +55,10 @@ class HyperswitchElement {
         if (this.options.onMessage) {
             this.options.onMessage(event.data);
         }
-        if (this.isFullPageModalEnabled() && event.source === this.iframe.contentWindow) {
+        if (!this.acceptMessage(event)) {
+            return;
+        }
+        if (this.isFullPageModalEnabled()) {
             if (((_a = event.data) === null || _a === void 0 ? void 0 : _a.type) === 'EMBEDDED_MODAL_OPEN') {
                 this.setFullPage(true);
             }
@@ -80,7 +84,6 @@ class HyperswitchElement {
         }
     }
     setFullPage(isFullPage) {
-        var _a;
         if (isFullPage !== this.isFullPage) {
             this.isFullPage = isFullPage;
             this.iframe.style.visibility = 'hidden';
@@ -112,9 +115,9 @@ class HyperswitchElement {
             }
             this.showIframeTimer = setTimeout(() => this.showIframe(), 300);
         }
-        (_a = this.iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.postMessage({
+        this.postMessageToIframe({
             type: isFullPage ? 'EMBEDDED_MODAL_OPENED' : 'EMBEDDED_MODAL_CLOSED'
-        }, '*');
+        });
     }
     showIframe() {
         if (this.showIframeTimer) {
@@ -157,6 +160,23 @@ class HyperswitchElement {
     }
     getIframe() {
         return this.iframe;
+    }
+    acceptMessage(event) {
+        var _a;
+        if (event.source !== ((_a = this.iframe) === null || _a === void 0 ? void 0 : _a.contentWindow)) {
+            return false;
+        }
+        if (this.iframeOrigin === null && event.origin && event.origin !== 'null') {
+            this.iframeOrigin = event.origin;
+        }
+        return this.iframeOrigin === null || event.origin === this.iframeOrigin;
+    }
+    postMessageToIframe(message) {
+        var _a, _b;
+        if (this.iframeOrigin === null) {
+            return;
+        }
+        (_b = (_a = this.iframe) === null || _a === void 0 ? void 0 : _a.contentWindow) === null || _b === void 0 ? void 0 : _b.postMessage(message, this.iframeOrigin);
     }
     isFullPageModalEnabled() {
         return this.options.fullPageModals !== false;
@@ -287,17 +307,15 @@ class Hyperswitch {
         }
         window.addEventListener("message", async (event) => {
             var _a, _b, _c;
+            const sourceElement = Array.from(this.activeElements.values()).find((element) => element.acceptMessage(event));
+            if (!sourceElement) {
+                return;
+            }
             if (((_a = event.data) === null || _a === void 0 ? void 0 : _a.type) === "TOKEN_EXPIRED" && ((_b = event.data) === null || _b === void 0 ? void 0 : _b.value) === true) {
                 await this.refetchAndBroadcastToken();
             }
             else if (((_c = event.data) === null || _c === void 0 ? void 0 : _c.type) === "EMBEDDED_IFRAME_READY") {
-                // Find the element whose iframe matches the event source
-                this.activeElements.forEach((element) => {
-                    const iframe = element.getIframe();
-                    if ((iframe === null || iframe === void 0 ? void 0 : iframe.contentWindow) === event.source) {
-                        this.onElementIframeLoaded(element);
-                    }
-                });
+                this.onElementIframeLoaded(sourceElement);
             }
         });
     }
@@ -311,14 +329,11 @@ class Hyperswitch {
             if (newToken) {
                 this.token = newToken;
                 this.tokenError = null;
-                this.activeElements.forEach((element, elementId) => {
-                    const iframe = element.getIframe();
-                    if (iframe === null || iframe === void 0 ? void 0 : iframe.contentWindow) {
-                        iframe.contentWindow.postMessage({
-                            type: 'AUTH_TOKEN',
-                            token: this.token
-                        }, '*');
-                    }
+                this.activeElements.forEach((element) => {
+                    element.postMessageToIframe({
+                        type: 'AUTH_TOKEN',
+                        token: this.token
+                    });
                 });
             }
             else {
@@ -336,13 +351,10 @@ class Hyperswitch {
     }
     sendErrorToActiveElements(errorMessage) {
         this.activeElements.forEach((element) => {
-            const iframe = element.getIframe();
-            if (iframe === null || iframe === void 0 ? void 0 : iframe.contentWindow) {
-                iframe.contentWindow.postMessage({
-                    type: 'AUTH_ERROR',
-                    error: errorMessage
-                }, '*');
-            }
+            element.postMessageToIframe({
+                type: 'AUTH_ERROR',
+                error: errorMessage
+            });
         });
     }
     create(type, options) {
@@ -372,53 +384,45 @@ class Hyperswitch {
             setTimeout(() => {
                 var _a;
                 try {
-                    const contentWindow = iframe.contentWindow;
-                    if (!contentWindow) {
-                        return;
-                    }
                     if (this.tokenError) {
-                        contentWindow.postMessage({
+                        element.postMessageToIframe({
                             type: 'AUTH_ERROR',
                             error: this.tokenError
-                        }, '*');
+                        });
                     }
                     else if (this.token) {
-                        contentWindow.postMessage({
+                        element.postMessageToIframe({
                             type: 'AUTH_TOKEN',
                             token: this.token
-                        }, '*');
+                        });
                     }
                     else {
-                        contentWindow.postMessage({
+                        element.postMessageToIframe({
                             type: 'AUTH_ERROR',
                             error: 'No token available'
-                        }, '*');
+                        });
                     }
                     // Always send init_config. If merchant doesn't provide it, send an empty object.
-                    contentWindow.postMessage({
+                    element.postMessageToIframe({
                         type: 'INIT_CONFIG',
                         init_config: (_a = this.initConfig) !== null && _a !== void 0 ? _a : {},
                         sdk_capabilities: { full_page_modal: element.isFullPageModalEnabled() }
-                    }, '*');
+                    });
                 }
                 catch (error) {
                 }
             }, 100);
         }).catch((error) => {
-            const iframe = element.getIframe();
-            const contentWindow = iframe === null || iframe === void 0 ? void 0 : iframe.contentWindow;
-            if (contentWindow) {
-                setTimeout(() => {
-                    try {
-                        contentWindow.postMessage({
-                            type: 'AUTH_ERROR',
-                            error: `Token initialization failed: ${error instanceof Error ? error.message : String(error)}`
-                        }, '*');
-                    }
-                    catch (_a) {
-                    }
-                }, 100);
-            }
+            setTimeout(() => {
+                try {
+                    element.postMessageToIframe({
+                        type: 'AUTH_ERROR',
+                        error: `Token initialization failed: ${error instanceof Error ? error.message : String(error)}`
+                    });
+                }
+                catch (_a) {
+                }
+            }, 100);
         });
     }
 }
