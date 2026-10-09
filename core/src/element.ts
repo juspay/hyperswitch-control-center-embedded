@@ -13,7 +13,7 @@ abstract class HyperswitchElement {
   private isFullPage: boolean = false;
   private previousBodyOverflow: string = '';
   private showIframeTimer: ReturnType<typeof setTimeout> | null = null;
-  private iframeOrigin: string = '*';
+  private iframeOrigin: string | null = null;
   
   constructor(instance: Hyperswitch, options?: ElementOptions) {
     this.instance = instance;
@@ -77,12 +77,8 @@ abstract class HyperswitchElement {
       this.options.onMessage(event.data);
     }
     
-    if (event.source !== this.iframe.contentWindow) {
+    if (!this.acceptMessage(event)) {
       return;
-    }
-    
-    if (event.origin && event.origin !== 'null') {
-      this.iframeOrigin = event.origin;
     }
     
     if (this.isFullPageModalEnabled()) {
@@ -204,8 +200,18 @@ abstract class HyperswitchElement {
     return this.iframe;
   }
 
+  public acceptMessage(event: MessageEvent): boolean {
+    if (event.source !== this.iframe?.contentWindow) {
+      return false;
+    }
+    if (this.iframeOrigin === null && event.origin && event.origin !== 'null') {
+      this.iframeOrigin = event.origin;
+    }
+    return this.iframeOrigin === null || event.origin === this.iframeOrigin;
+  }
+
   public postMessageToIframe(message: Record<string, unknown>): void {
-    this.iframe?.contentWindow?.postMessage(message, this.iframeOrigin);
+    this.iframe?.contentWindow?.postMessage(message, this.iframeOrigin ?? '*');
   }
 
   public isFullPageModalEnabled(): boolean {

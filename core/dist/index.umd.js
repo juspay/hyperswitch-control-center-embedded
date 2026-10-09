@@ -10,7 +10,7 @@
           this.isFullPage = false;
           this.previousBodyOverflow = '';
           this.showIframeTimer = null;
-          this.iframeOrigin = '*';
+          this.iframeOrigin = null;
           this.instance = instance;
           this.options = options || {};
           this._internalId = `hyper-el-${Math.random().toString(36).substring(7)}`;
@@ -57,11 +57,8 @@
           if (this.options.onMessage) {
               this.options.onMessage(event.data);
           }
-          if (event.source !== this.iframe.contentWindow) {
+          if (!this.acceptMessage(event)) {
               return;
-          }
-          if (event.origin && event.origin !== 'null') {
-              this.iframeOrigin = event.origin;
           }
           if (this.isFullPageModalEnabled()) {
               if (((_a = event.data) === null || _a === void 0 ? void 0 : _a.type) === 'EMBEDDED_MODAL_OPEN') {
@@ -166,9 +163,19 @@
       getIframe() {
           return this.iframe;
       }
+      acceptMessage(event) {
+          var _a;
+          if (event.source !== ((_a = this.iframe) === null || _a === void 0 ? void 0 : _a.contentWindow)) {
+              return false;
+          }
+          if (this.iframeOrigin === null && event.origin && event.origin !== 'null') {
+              this.iframeOrigin = event.origin;
+          }
+          return this.iframeOrigin === null || event.origin === this.iframeOrigin;
+      }
       postMessageToIframe(message) {
-          var _a, _b;
-          (_b = (_a = this.iframe) === null || _a === void 0 ? void 0 : _a.contentWindow) === null || _b === void 0 ? void 0 : _b.postMessage(message, this.iframeOrigin);
+          var _a, _b, _c;
+          (_b = (_a = this.iframe) === null || _a === void 0 ? void 0 : _a.contentWindow) === null || _b === void 0 ? void 0 : _b.postMessage(message, (_c = this.iframeOrigin) !== null && _c !== void 0 ? _c : '*');
       }
       isFullPageModalEnabled() {
           return this.options.fullPageModals !== false;
@@ -299,7 +306,7 @@
           }
           window.addEventListener("message", async (event) => {
               var _a, _b, _c;
-              const sourceElement = Array.from(this.activeElements.values()).find((element) => { var _a; return ((_a = element.getIframe()) === null || _a === void 0 ? void 0 : _a.contentWindow) === event.source; });
+              const sourceElement = Array.from(this.activeElements.values()).find((element) => element.acceptMessage(event));
               if (!sourceElement) {
                   return;
               }

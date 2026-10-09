@@ -22,6 +22,7 @@ declare abstract class HyperswitchElement {
     protected abstract getElementType(): string;
     protected abstract getIframeSrc(): string;
     getIframe(): HTMLIFrameElement;
+    acceptMessage(event: MessageEvent): boolean;
     postMessageToIframe(message: Record<string, unknown>): void;
     isFullPageModalEnabled(): boolean;
 }

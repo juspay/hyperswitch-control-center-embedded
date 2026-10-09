@@ -57,7 +57,7 @@ class Hyperswitch {
 
     window.addEventListener("message", async (event) => {
       const sourceElement = Array.from(this.activeElements.values()).find(
-        (element) => element.getIframe()?.contentWindow === event.source
+        (element) => element.acceptMessage(event)
       );
       if (!sourceElement) {
         return;
