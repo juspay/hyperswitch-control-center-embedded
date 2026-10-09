@@ -172,8 +172,11 @@ class HyperswitchElement {
         return this.iframeOrigin === null || event.origin === this.iframeOrigin;
     }
     postMessageToIframe(message) {
-        var _a, _b, _c;
-        (_b = (_a = this.iframe) === null || _a === void 0 ? void 0 : _a.contentWindow) === null || _b === void 0 ? void 0 : _b.postMessage(message, (_c = this.iframeOrigin) !== null && _c !== void 0 ? _c : '*');
+        var _a, _b;
+        if (this.iframeOrigin === null) {
+            return;
+        }
+        (_b = (_a = this.iframe) === null || _a === void 0 ? void 0 : _a.contentWindow) === null || _b === void 0 ? void 0 : _b.postMessage(message, this.iframeOrigin);
     }
     isFullPageModalEnabled() {
         return this.options.fullPageModals !== false;

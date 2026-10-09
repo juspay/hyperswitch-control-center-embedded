@@ -211,7 +211,10 @@ abstract class HyperswitchElement {
   }
 
   public postMessageToIframe(message: Record<string, unknown>): void {
-    this.iframe?.contentWindow?.postMessage(message, this.iframeOrigin ?? '*');
+    if (this.iframeOrigin === null) {
+      return;
+    }
+    this.iframe?.contentWindow?.postMessage(message, this.iframeOrigin);
   }
 
   public isFullPageModalEnabled(): boolean {
