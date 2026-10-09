@@ -30,7 +30,7 @@ export const ConnectorConfiguration: React.FC<ComponentProps> = (props) => {
 
 ConnectorConfiguration.displayName = 'ConnectorConfiguration';
 
-export const PaymentsList: React.FC<ComponentProps> = (props) => {
+export const Payments: React.FC<ComponentProps> = (props) => {
   const hyperswitchInstance = useHyperswitchInstance();
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -48,9 +48,9 @@ export const PaymentsList: React.FC<ComponentProps> = (props) => {
   return <div ref={containerRef} />;
 };
 
-PaymentsList.displayName = 'PaymentsList';
+Payments.displayName = 'Payments';
 
-export const RefundsList: React.FC<ComponentProps> = (props) => {
+export const Refunds: React.FC<ComponentProps> = (props) => {
   const hyperswitchInstance = useHyperswitchInstance();
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -68,4 +68,4 @@ export const RefundsList: React.FC<ComponentProps> = (props) => {
   return <div ref={containerRef} />;
 };
 
-RefundsList.displayName = 'RefundsList';
+Refunds.displayName = 'Refunds';

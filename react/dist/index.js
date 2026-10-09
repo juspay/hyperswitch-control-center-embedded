@@ -65,7 +65,7 @@ var ConnectorConfiguration = function (props) {
     return React__namespace.createElement("div", { ref: containerRef });
 };
 ConnectorConfiguration.displayName = 'ConnectorConfiguration';
-var PaymentsList = function (props) {
+var Payments = function (props) {
     var hyperswitchInstance = useHyperswitchInstance();
     var containerRef = React.useRef(null);
     React.useEffect(function () {
@@ -79,8 +79,8 @@ var PaymentsList = function (props) {
     }, [hyperswitchInstance, props]);
     return React__namespace.createElement("div", { ref: containerRef });
 };
-PaymentsList.displayName = 'PaymentsList';
-var RefundsList = function (props) {
+Payments.displayName = 'Payments';
+var Refunds = function (props) {
     var hyperswitchInstance = useHyperswitchInstance();
     var containerRef = React.useRef(null);
     React.useEffect(function () {
@@ -94,11 +94,11 @@ var RefundsList = function (props) {
     }, [hyperswitchInstance, props]);
     return React__namespace.createElement("div", { ref: containerRef });
 };
-RefundsList.displayName = 'RefundsList';
+Refunds.displayName = 'Refunds';
 
 exports.ConnectorConfiguration = ConnectorConfiguration;
 exports.HyperswitchProvider = HyperswitchProvider;
-exports.PaymentsList = PaymentsList;
-exports.RefundsList = RefundsList;
+exports.Payments = Payments;
+exports.Refunds = Refunds;
 exports.useHyperswitchInstance = useHyperswitchInstance;
 //# sourceMappingURL=index.js.map

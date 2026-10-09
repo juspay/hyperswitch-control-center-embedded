@@ -1,2 +1,2 @@
 export { HyperswitchProvider, useHyperswitchInstance } from './context';
-export { ConnectorConfiguration, PaymentsList, RefundsList } from './components';
+export { ConnectorConfiguration, Payments, Refunds } from './components';
