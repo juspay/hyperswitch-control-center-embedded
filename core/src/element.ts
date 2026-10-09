@@ -10,6 +10,9 @@ abstract class HyperswitchElement {
   protected iframe!: HTMLIFrameElement;
   private boundMessageHandler: ((event: MessageEvent) => void) | null;
   public readonly _internalId: string;
+  private isFullPage: boolean = false;
+  private previousBodyOverflow: string = '';
+  private showIframeTimer: ReturnType<typeof setTimeout> | null = null;
   
   constructor(instance: Hyperswitch, options?: ElementOptions) {
     this.instance = instance;
@@ -73,11 +76,21 @@ abstract class HyperswitchElement {
       this.options.onMessage(event.data);
     }
     
+    if (this.isFullPageModalEnabled() && event.source === this.iframe.contentWindow) {
+      if (event.data?.type === 'EMBEDDED_MODAL_OPEN') {
+        this.setFullPage(true);
+      } else if (event.data?.type === 'EMBEDDED_MODAL_CLOSE') {
+        this.setFullPage(false);
+      } else if (event.data?.type === 'EMBEDDED_MODAL_VISIBLE') {
+        this.showIframe();
+      }
+    }
+    
     if (event.data?.type === 'EMBEDDED_COMPONENT_RESIZE') {
       const newHeight = event.data.height;
       const messageComponent = event.data.component || '';
       
-      if (messageComponent === this.getElementType() && typeof newHeight === 'number' && newHeight > 0) {
+      if (!this.isFullPage && messageComponent === this.getElementType() && typeof newHeight === 'number' && newHeight > 0) {
         this.element.style.height = `${newHeight}px`;
         
         if (this.options.onResize) {
@@ -88,6 +101,53 @@ abstract class HyperswitchElement {
         }
       }
     }
+  }
+  
+  private setFullPage(isFullPage: boolean): void {
+    if (isFullPage !== this.isFullPage) {
+      this.isFullPage = isFullPage;
+      this.iframe.style.visibility = 'hidden';
+      
+      if (isFullPage) {
+        this.previousBodyOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        Object.assign(this.iframe.style, {
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100vw',
+          height: '100vh',
+          zIndex: '2147483647'
+        });
+      } else {
+        document.body.style.overflow = this.previousBodyOverflow;
+        Object.assign(this.iframe.style, {
+          position: '',
+          top: '',
+          left: '',
+          width: '100%',
+          height: '100%',
+          zIndex: ''
+        });
+      }
+      
+      if (this.showIframeTimer) {
+        clearTimeout(this.showIframeTimer);
+      }
+      this.showIframeTimer = setTimeout(() => this.showIframe(), 300);
+    }
+    
+    this.iframe.contentWindow?.postMessage({
+      type: isFullPage ? 'EMBEDDED_MODAL_OPENED' : 'EMBEDDED_MODAL_CLOSED'
+    }, '*');
+  }
+  
+  private showIframe(): void {
+    if (this.showIframeTimer) {
+      clearTimeout(this.showIframeTimer);
+      this.showIframeTimer = null;
+    }
+    this.iframe.style.visibility = '';
   }
   
   mount(domNode: string | HTMLElement): HyperswitchElement {
@@ -111,6 +171,14 @@ abstract class HyperswitchElement {
     if (!isBrowser) {
       return;
     }
+    if (this.isFullPage) {
+      this.isFullPage = false;
+      document.body.style.overflow = this.previousBodyOverflow;
+    }
+    if (this.showIframeTimer) {
+      clearTimeout(this.showIframeTimer);
+      this.showIframeTimer = null;
+    }
     if (this.boundMessageHandler) {
       window.removeEventListener('message', this.boundMessageHandler);
     }
@@ -125,6 +193,10 @@ abstract class HyperswitchElement {
 
   public getIframe(): HTMLIFrameElement {
     return this.iframe;
+  }
+
+  public isFullPageModalEnabled(): boolean {
+    return this.options.fullPageModals !== false;
   }
 }
 
