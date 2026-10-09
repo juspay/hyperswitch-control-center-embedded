@@ -114,6 +114,7 @@ All fields in `initConfig` are optional. Omitting them uses the default Control 
 | Prop | Type | Description |
 |------|------|-------------|
 | `url` | `string` | Base URL for the embedded component |
+| `fullPageModals` | `boolean` | Show modals over the full host page. Defaults to `true`. Set `false` to keep modals inside the component, for example when an ancestor has a CSS `transform` |
 
 ### `MerchantTheme` (for `initConfig`)
 

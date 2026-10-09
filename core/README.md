@@ -103,7 +103,18 @@ Available components:
 | `payments` | Payments list and payment details |
 | `refunds` | Refunds list and refund details |
 
-Modals opened inside a component are shown over the full host page: while one is open, the SDK temporarily stretches the component's iframe across the window and restores it on close.
+Modals opened inside a component are shown over the full host page: while one is open, the SDK temporarily stretches the component's iframe across the window, locks page scrolling and restores both on close.
+
+This applies to every component, including `connectors`. To keep modals inside the component, pass `fullPageModals: false`:
+
+```javascript
+const connectors = hyperswitch.create('connectors', {
+  url: 'https://app.hyperswitch.io',
+  fullPageModals: false
+});
+```
+
+Full-page modals rely on `position: fixed`. If an ancestor of the mount point has a CSS `transform`, `filter`, `perspective` or `contain`, or creates a stacking context below other page content, the modal can be clipped or covered. Use `fullPageModals: false` in that layout.
 
 ## Mounting
 

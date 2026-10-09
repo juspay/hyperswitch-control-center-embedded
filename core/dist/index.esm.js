@@ -50,7 +50,7 @@ class HyperswitchElement {
         if (this.options.onMessage) {
             this.options.onMessage(event.data);
         }
-        if (event.source === this.iframe.contentWindow) {
+        if (this.isFullPageModalEnabled() && event.source === this.iframe.contentWindow) {
             if (((_a = event.data) === null || _a === void 0 ? void 0 : _a.type) === 'EMBEDDED_MODAL_OPEN') {
                 this.setFullPage(true);
             }
@@ -136,7 +136,14 @@ class HyperswitchElement {
         if (!isBrowser$1) {
             return;
         }
-        this.setFullPage(false);
+        if (this.isFullPage) {
+            this.isFullPage = false;
+            document.body.style.overflow = this.previousBodyOverflow;
+        }
+        if (this.showIframeTimer) {
+            clearTimeout(this.showIframeTimer);
+            this.showIframeTimer = null;
+        }
         if (this.boundMessageHandler) {
             window.removeEventListener('message', this.boundMessageHandler);
         }
@@ -146,6 +153,9 @@ class HyperswitchElement {
     }
     getIframe() {
         return this.iframe;
+    }
+    isFullPageModalEnabled() {
+        return this.options.fullPageModals !== false;
     }
 }
 
@@ -384,7 +394,7 @@ class Hyperswitch {
                     contentWindow.postMessage({
                         type: 'INIT_CONFIG',
                         init_config: (_a = this.initConfig) !== null && _a !== void 0 ? _a : {},
-                        sdk_capabilities: { full_page_modal: true }
+                        sdk_capabilities: { full_page_modal: element.isFullPageModalEnabled() }
                     }, '*');
                 }
                 catch (error) {

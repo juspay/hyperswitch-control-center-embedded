@@ -173,7 +173,7 @@ class Hyperswitch {
           contentWindow.postMessage({
             type: 'INIT_CONFIG',
             init_config: this.initConfig ?? {},
-            sdk_capabilities: { full_page_modal: true }
+            sdk_capabilities: { full_page_modal: element.isFullPageModalEnabled() }
           }, '*');
         } catch (error) {
         }

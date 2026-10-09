@@ -76,7 +76,7 @@ abstract class HyperswitchElement {
       this.options.onMessage(event.data);
     }
     
-    if (event.source === this.iframe.contentWindow) {
+    if (this.isFullPageModalEnabled() && event.source === this.iframe.contentWindow) {
       if (event.data?.type === 'EMBEDDED_MODAL_OPEN') {
         this.setFullPage(true);
       } else if (event.data?.type === 'EMBEDDED_MODAL_CLOSE') {
@@ -171,7 +171,14 @@ abstract class HyperswitchElement {
     if (!isBrowser) {
       return;
     }
-    this.setFullPage(false);
+    if (this.isFullPage) {
+      this.isFullPage = false;
+      document.body.style.overflow = this.previousBodyOverflow;
+    }
+    if (this.showIframeTimer) {
+      clearTimeout(this.showIframeTimer);
+      this.showIframeTimer = null;
+    }
     if (this.boundMessageHandler) {
       window.removeEventListener('message', this.boundMessageHandler);
     }
@@ -186,6 +193,10 @@ abstract class HyperswitchElement {
 
   public getIframe(): HTMLIFrameElement {
     return this.iframe;
+  }
+
+  public isFullPageModalEnabled(): boolean {
+    return this.options.fullPageModals !== false;
   }
 }
 
