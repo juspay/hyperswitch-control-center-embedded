@@ -100,6 +100,8 @@ All fields in `initConfig` are optional. Omitting them uses the default Control 
 |--------|-------------|
 | `HyperswitchProvider` | Provider component that supplies the Hyperswitch embed instance to the tree |
 | `ConnectorConfiguration` | Component that renders the connector configuration UI |
+| `Payments` | Component that renders the payments list and payment details |
+| `Refunds` | Component that renders the refunds list and refund details |
 
 ### `HyperswitchProvider` props
 
@@ -107,11 +109,12 @@ All fields in `initConfig` are optional. Omitting them uses the default Control 
 |------|------|----------|-------------|
 | `hyperswitchInstance` | `Hyperswitch` | Yes | Instance returned by `loadHyperswitch()` |
 
-### `ConnectorConfiguration` props
+### `ConnectorConfiguration`, `Payments` and `Refunds` props
 
 | Prop | Type | Description |
 |------|------|-------------|
 | `url` | `string` | Base URL for the embedded component |
+| `fullPageModals` | `boolean` | Show modals over the full host page. Defaults to `true`. Set `false` to keep modals inside the component, for example when an ancestor has a CSS `transform` |
 
 ### `MerchantTheme` (for `initConfig`)
 

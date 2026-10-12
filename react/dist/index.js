@@ -65,8 +65,40 @@ var ConnectorConfiguration = function (props) {
     return React__namespace.createElement("div", { ref: containerRef });
 };
 ConnectorConfiguration.displayName = 'ConnectorConfiguration';
+var Payments = function (props) {
+    var hyperswitchInstance = useHyperswitchInstance();
+    var containerRef = React.useRef(null);
+    React.useEffect(function () {
+        if (!containerRef.current)
+            return;
+        var component = hyperswitchInstance.create('payments', props);
+        component.mount(containerRef.current);
+        return function () {
+            component.destroy();
+        };
+    }, [hyperswitchInstance, props]);
+    return React__namespace.createElement("div", { ref: containerRef });
+};
+Payments.displayName = 'Payments';
+var Refunds = function (props) {
+    var hyperswitchInstance = useHyperswitchInstance();
+    var containerRef = React.useRef(null);
+    React.useEffect(function () {
+        if (!containerRef.current)
+            return;
+        var component = hyperswitchInstance.create('refunds', props);
+        component.mount(containerRef.current);
+        return function () {
+            component.destroy();
+        };
+    }, [hyperswitchInstance, props]);
+    return React__namespace.createElement("div", { ref: containerRef });
+};
+Refunds.displayName = 'Refunds';
 
 exports.ConnectorConfiguration = ConnectorConfiguration;
 exports.HyperswitchProvider = HyperswitchProvider;
+exports.Payments = Payments;
+exports.Refunds = Refunds;
 exports.useHyperswitchInstance = useHyperswitchInstance;
 //# sourceMappingURL=index.js.map

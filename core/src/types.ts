@@ -34,4 +34,6 @@ export type ElementOptions = {
   onMessage?: (message: any) => void;
   /** Callback for handling resize events from the embedded component */
   onResize?: (dimensions: { width: number; height: number }) => void;
+  /** Show modals over the full host page instead of inside the element. Defaults to true */
+  fullPageModals?: boolean;
 };
