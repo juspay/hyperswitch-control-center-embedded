@@ -1,142 +1,120 @@
 # Hyperswitch Control Center Embedded SDK
 
-Monorepo for the Hyperswitch Control Center embeddable SDKs.
+[![core on npm](https://img.shields.io/npm/v/@juspay-tech/hyperswitch-control-center-embed-core?label=embed-core)](https://www.npmjs.com/package/@juspay-tech/hyperswitch-control-center-embed-core)
+[![react on npm](https://img.shields.io/npm/v/@juspay-tech/hyperswitch-control-center-embed-react?label=embed-react)](https://www.npmjs.com/package/@juspay-tech/hyperswitch-control-center-embed-react)
 
-This repo contains two publishable packages:
-
-- **`@juspay-tech/hyperswitch-control-center-embed-core`** – Vanilla JavaScript SDK (no React required)
-- **`@juspay-tech/hyperswitch-control-center-embed-react`** – React components built on top of the core SDK
-
-Each package also has its own README with more in‑depth usage and API reference.
+Embed Hyperswitch Control Center screens inside your own product, so your users can manage connectors, payments and refunds without leaving your dashboard.
 
 ## Packages
 
-| Package | Description | When to use |
-|--------|-------------|-------------|
-| `@juspay-tech/hyperswitch-control-center-embed-core` | Low-level JavaScript SDK that loads Control Center via iframes | Any JS app (framework-agnostic) |
-| `@juspay-tech/hyperswitch-control-center-embed-react` | React components wrapping the core SDK | React 18+ apps that prefer JSX components |
+| Package | Use it for |
+|---------|------------|
+| [`@juspay-tech/hyperswitch-control-center-embed-core`](./core/README.md) | Any web app (framework-agnostic JavaScript) |
+| [`@juspay-tech/hyperswitch-control-center-embed-react`](./react/README.md) | React 18+ apps |
 
-## Installation (for consumers)
+## Components
 
-### Core package (vanilla JS)
+| Component | Core name | React component |
+|-----------|-----------|-----------------|
+| Connector configuration | `connectors` | `<ConnectorConfiguration />` |
+| Payments list and details | `payments` | `<Payments />` |
+| Refunds list and details | `refunds` | `<Refunds />` |
 
-Install the core SDK:
+## Integration
+
+### 1. Create a token endpoint on your backend
+
+Your backend exchanges your Hyperswitch API key for an embedded token. Keep the API key on your server; only the token goes to the browser.
+
+```javascript
+// Node.js / Express
+app.get('/api/get-embedded-token', async (req, res) => {
+  const response = await fetch(`${process.env.HYPERSWITCH_API_URL}/embedded/token`, {
+    headers: {
+      'api-key': process.env.HYPERSWITCH_API_KEY,
+      'x-profile-id': process.env.HYPERSWITCH_PROFILE_ID
+    }
+  });
+  const data = await response.json();
+  res.json({ token: data.token });
+});
+```
+
+### 2. Install the SDK
 
 ```bash
+# JavaScript
 npm install @juspay-tech/hyperswitch-control-center-embed-core
-```
 
-or with `pnpm`:
-
-```bash
-pnpm add @juspay-tech/hyperswitch-control-center-embed-core
-```
-
-### React package
-
-```bash
+# React (includes the core package)
 npm install @juspay-tech/hyperswitch-control-center-embed-react
 ```
 
-or with `pnpm`:
-
-```bash
-pnpm add @juspay-tech/hyperswitch-control-center-embed-react
-```
-
-The core package is included as a dependency. Import and initialize with `loadHyperswitch` from the core package.
-
-## Quick usage
-
-### Core package (vanilla JS)
+### 3. Initialize with `fetchToken`
 
 ```javascript
 import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-core';
 
 const hyperswitch = loadHyperswitch({
   fetchToken: async () => {
-    // Fetch your authentication token from your backend
     const response = await fetch('/api/get-embedded-token');
     const data = await response.json();
     return data.token;
   }
 });
+```
 
-const connectors = hyperswitch.create('connectors', {
+### 4. Add a component
+
+**JavaScript**
+
+```javascript
+const payments = hyperswitch.create('payments', {
   url: 'https://app.hyperswitch.io'
 });
 
-connectors.mount('#hyperswitch-root');
+payments.mount('#hyperswitch-root');
 ```
 
-### React package
+**React**
 
 ```jsx
-import { loadHyperswitch } from '@juspay-tech/hyperswitch-control-center-embed-core';
 import {
   HyperswitchProvider,
-  ConnectorConfiguration
+  Payments
 } from '@juspay-tech/hyperswitch-control-center-embed-react';
-
-const hyperswitch = loadHyperswitch({
-  fetchToken: async () => {
-    const response = await fetch('/api/get-embedded-token');
-    const data = await response.json();
-    return data.token;
-  }
-});
 
 function App() {
   return (
     <HyperswitchProvider hyperswitchInstance={hyperswitch}>
-      <ConnectorConfiguration
-        url="https://app.hyperswitch.io"
-      />
+      <Payments url="https://app.hyperswitch.io" />
     </HyperswitchProvider>
   );
 }
 ```
 
-For full API details, see the `core/README.md` and `react/README.md` files.
+### Environments
 
-## Development (for contributors)
+| Environment | `url` | `HYPERSWITCH_API_URL` |
+|-------------|-------|-----------------------|
+| Sandbox | `https://app.hyperswitch.io` | `https://app.hyperswitch.io/api` |
+| Production | `https://live.hyperswitch.io` | `https://live.hyperswitch.io/api` |
 
-This repository uses `pnpm` workspaces. Install dependencies with `pnpm install`. The scripts below can be run with either `npm run <script>` or `pnpm run <script>`.
+Use the same environment for the token and the component.
 
-### Install dependencies
+See the [core](./core/README.md) and [react](./react/README.md) READMEs for options and theming, and the [Integration Guide](https://docs.hyperswitch.io/explore-hyperswitch/account-management/beta-embeddable-components/integration-guide) for the full setup.
 
-```bash
-pnpm install
-```
+## Development
 
-### Build all packages
-
-```bash
-npm run build
-# or: pnpm run build
-```
-
-### Type check all packages
+This repository is a `pnpm` workspace.
 
 ```bash
-npm run type-check
-# or: pnpm run type-check
+pnpm install          # install dependencies
+pnpm run build        # build both packages
+pnpm run type-check   # type-check both packages
 ```
 
-### Build individual packages
-
-```bash
-npm run build:core
-npm run build:react
-# or: pnpm run build:core  /  pnpm run build:react
-```
-
-### Clean build artifacts
-
-```bash
-npm run clean
-# or: pnpm run clean
-```
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the commit convention and pull request process.
 
 ## License
 
