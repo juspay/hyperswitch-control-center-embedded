@@ -10,6 +10,7 @@ declare abstract class HyperswitchElement {
     private isFullPage;
     private previousBodyOverflow;
     private showIframeTimer;
+    private iframeOrigin;
     constructor(instance: Hyperswitch, options?: ElementOptions);
     private setupElement;
     private setupIframe;
@@ -21,6 +22,8 @@ declare abstract class HyperswitchElement {
     protected abstract getElementType(): string;
     protected abstract getIframeSrc(): string;
     getIframe(): HTMLIFrameElement;
+    acceptMessage(event: MessageEvent): boolean;
+    postMessageToIframe(message: Record<string, unknown>): void;
     isFullPageModalEnabled(): boolean;
 }
 export { HyperswitchElement };

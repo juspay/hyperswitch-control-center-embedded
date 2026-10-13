@@ -13,6 +13,7 @@ abstract class HyperswitchElement {
   private isFullPage: boolean = false;
   private previousBodyOverflow: string = '';
   private showIframeTimer: ReturnType<typeof setTimeout> | null = null;
+  private iframeOrigin: string | null = null;
   
   constructor(instance: Hyperswitch, options?: ElementOptions) {
     this.instance = instance;
@@ -76,7 +77,11 @@ abstract class HyperswitchElement {
       this.options.onMessage(event.data);
     }
     
-    if (this.isFullPageModalEnabled() && event.source === this.iframe.contentWindow) {
+    if (!this.acceptMessage(event)) {
+      return;
+    }
+    
+    if (this.isFullPageModalEnabled()) {
       if (event.data?.type === 'EMBEDDED_MODAL_OPEN') {
         this.setFullPage(true);
       } else if (event.data?.type === 'EMBEDDED_MODAL_CLOSE') {
@@ -137,9 +142,9 @@ abstract class HyperswitchElement {
       this.showIframeTimer = setTimeout(() => this.showIframe(), 300);
     }
     
-    this.iframe.contentWindow?.postMessage({
+    this.postMessageToIframe({
       type: isFullPage ? 'EMBEDDED_MODAL_OPENED' : 'EMBEDDED_MODAL_CLOSED'
-    }, '*');
+    });
   }
   
   private showIframe(): void {
@@ -193,6 +198,23 @@ abstract class HyperswitchElement {
 
   public getIframe(): HTMLIFrameElement {
     return this.iframe;
+  }
+
+  public acceptMessage(event: MessageEvent): boolean {
+    if (event.source !== this.iframe?.contentWindow) {
+      return false;
+    }
+    if (this.iframeOrigin === null && event.origin && event.origin !== 'null') {
+      this.iframeOrigin = event.origin;
+    }
+    return this.iframeOrigin === null || event.origin === this.iframeOrigin;
+  }
+
+  public postMessageToIframe(message: Record<string, unknown>): void {
+    if (this.iframeOrigin === null) {
+      return;
+    }
+    this.iframe?.contentWindow?.postMessage(message, this.iframeOrigin);
   }
 
   public isFullPageModalEnabled(): boolean {
